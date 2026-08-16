@@ -155,7 +155,9 @@
       flex-shrink: 0;
     }
 
+    /* SUBTLE LOGO GLITCH EFFECT */
     .logo {
+      position: relative;
       font-family: 'Orbitron', sans-serif;
       font-size: clamp(1.3rem, 2.5vw, 1.8rem);
       font-weight: 900;
@@ -164,6 +166,40 @@
       letter-spacing: 2px;
       cursor: pointer;
       white-space: nowrap;
+      user-select: none;
+      display: inline-block;
+    }
+
+    /* Subtle Keyframes for Logo Text Glitch */
+    @keyframes logoGlitchSubtle {
+      0% {
+        text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
+        transform: translate(0);
+      }
+      20% {
+        text-shadow: 1px 0 var(--cyan), -1px 0 var(--purple);
+        transform: translate(-1px, 0.5px);
+      }
+      40% {
+        text-shadow: -1px 0 var(--yellow), 1px 0 var(--cyan);
+        transform: translate(1px, -0.5px);
+      }
+      60% {
+        text-shadow: 1.5px 0 var(--purple), -1.5px 0 var(--cyan);
+        transform: translate(-0.5px, 0);
+      }
+      80% {
+        text-shadow: -1px 0 var(--cyan), 1px 0 var(--yellow);
+        transform: translate(0.5px, -0.5px);
+      }
+      100% {
+        text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
+        transform: translate(0);
+      }
+    }
+
+    .logo.logo-glitch {
+      animation: logoGlitchSubtle 0.28s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     nav {
@@ -361,7 +397,7 @@
       word-break: break-all;
     }
 
-    /* Glitch Keyframe Animations */
+    /* Code Terminal Glitch Animations */
     @keyframes cyberGlitch {
       0% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--purple); transform: translate(0); }
       20% { text-shadow: -2px 0 var(--yellow), 2px 0 var(--cyan); transform: translate(-1px, 1px); }
@@ -495,7 +531,7 @@
 
   <!-- Navigation Bar -->
   <header>
-    <div class="logo" onclick="switchPage('home')">ZORO INTERACTIVE</div>
+    <div class="logo" id="main-logo" onclick="switchPage('home')">ZORO INTERACTIVE</div>
     <nav>
       <ul>
         <li><button class="nav-btn active" onclick="switchPage('home')">HOME</button></li>
@@ -731,6 +767,27 @@
       }
     })();
 
+    // SUBTLE PERIODIC LOGO GLITCH LOOP
+    (function initSubtleLogoGlitch() {
+      const logo = document.getElementById('main-logo');
+      if (!logo) return;
+
+      function triggerGlitch() {
+        logo.classList.add('logo-glitch');
+        
+        setTimeout(() => {
+          logo.classList.remove('logo-glitch');
+        }, 280);
+
+        // Schedule next subtle glitch between 4 and 8 seconds
+        const nextInterval = Math.floor(Math.random() * 4000) + 4000;
+        setTimeout(triggerGlitch, nextInterval);
+      }
+
+      // Initial delay before first glitch triggers
+      setTimeout(triggerGlitch, 3000);
+    })();
+
     // Responsive Cyberpunk Tunnel Engine
     (function initGlitchTunnel() {
       const canvas = document.getElementById('tunnel-canvas');
@@ -870,7 +927,6 @@
     // CYBERPUNK GLITCH CODE STREAM GENERATOR
     (function initGlitchCodeStream() {
       const streamElem = document.getElementById('terminal-stream');
-      const box = document.getElementById('terminal-box');
 
       const codeSnippets = [
         '<span class="cm">// ENGINE_CORE_INIT: C++20 Stream</span>',
@@ -900,7 +956,6 @@
         streamElem.innerHTML = linesShown.join('<br>') + ' <span class="cursor"></span>';
         lineIdx++;
 
-        // Randomly trigger CSS glitch effect
         if (Math.random() > 0.6) {
           streamElem.classList.add('glitch-active');
           setTimeout(() => streamElem.classList.remove('glitch-active'), 250);
