@@ -155,7 +155,7 @@
       flex-shrink: 0;
     }
 
-    /* SUBTLE LOGO GLITCH EFFECT */
+    /* LOGO STYLING */
     .logo {
       position: relative;
       font-family: 'Orbitron', sans-serif;
@@ -168,38 +168,42 @@
       white-space: nowrap;
       user-select: none;
       display: inline-block;
+      will-change: transform, text-shadow;
     }
 
-    /* Subtle Keyframes for Logo Text Glitch */
-    @keyframes logoGlitchSubtle {
+    /* UNIFIED ENHANCED SUBTLE GLITCH KEYFRAMES */
+    @keyframes cyberGlitchSubtle {
       0% {
-        text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
         transform: translate(0);
+        filter: drop-shadow(0 0 0 transparent);
       }
-      20% {
-        text-shadow: 1px 0 var(--cyan), -1px 0 var(--purple);
-        transform: translate(-1px, 0.5px);
+      15% {
+        transform: translate(-2px, 1px);
+        text-shadow: 2px 0 var(--cyan), -2px 0 var(--purple);
+        filter: drop-shadow(-2px 0 var(--cyan));
       }
-      40% {
-        text-shadow: -1px 0 var(--yellow), 1px 0 var(--cyan);
-        transform: translate(1px, -0.5px);
+      35% {
+        transform: translate(2px, -1px);
+        text-shadow: -2px 0 var(--yellow), 2px 0 var(--cyan);
+        filter: drop-shadow(2px 0 var(--purple));
       }
-      60% {
-        text-shadow: 1.5px 0 var(--purple), -1.5px 0 var(--cyan);
-        transform: translate(-0.5px, 0);
+      55% {
+        transform: translate(-1.5px, -0.5px);
+        text-shadow: 2px 0 var(--purple), -2px 0 var(--cyan);
       }
-      80% {
-        text-shadow: -1px 0 var(--cyan), 1px 0 var(--yellow);
-        transform: translate(0.5px, -0.5px);
+      75% {
+        transform: translate(1px, 1.5px);
+        text-shadow: -2px 0 var(--cyan), 2px 0 var(--yellow);
       }
       100% {
-        text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
         transform: translate(0);
+        filter: drop-shadow(0 0 0 transparent);
       }
     }
 
-    .logo.logo-glitch {
-      animation: logoGlitchSubtle 0.28s cubic-bezier(0.25, 1, 0.5, 1);
+    /* GLITCH TRIGGER CLASS */
+    .element-glitch {
+      animation: cyberGlitchSubtle 0.3s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     nav {
@@ -243,6 +247,8 @@
       transition: all 0.3s ease;
       text-decoration: none;
       white-space: nowrap;
+      display: inline-block;
+      will-change: transform, text-shadow;
     }
 
     .btn-sys:hover { background: var(--yellow); color: #000; box-shadow: 0 0 15px var(--yellow); }
@@ -329,6 +335,7 @@
       background: #4c1d95; color: #fff; border: 1px solid var(--purple);
       padding: 0.8rem 1.6rem; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: clamp(0.85rem, 1.5vw, 1rem);
       cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; width: fit-content; max-width: 100%;
+      will-change: transform, text-shadow;
     }
     .btn-cyber:hover { background: var(--purple); box-shadow: 0 0 20px var(--purple); }
 
@@ -541,7 +548,7 @@
         <li><button class="nav-btn" onclick="switchPage('content')">CONTENT</button></li>
       </ul>
     </nav>
-    <a href="javascript:void(0)" onclick="switchPage('home')" class="btn-sys">SYSTEM // ONLINE</a>
+    <a href="javascript:void(0)" id="sys-btn" onclick="switchPage('home')" class="btn-sys">SYSTEM // ONLINE</a>
   </header>
 
   <div class="container">
@@ -566,7 +573,7 @@
             </div>
           </div>
 
-          <button class="btn-cyber" onclick="switchPage('portfolio')">📁 ACCESS PORTFOLIO</button>
+          <button class="btn-cyber" id="portfolio-btn" onclick="switchPage('portfolio')">📁 ACCESS PORTFOLIO</button>
         </div>
 
         <!-- Right Column (Cards + Cyberpunk Code Terminal) -->
@@ -767,25 +774,34 @@
       }
     })();
 
-    // SUBTLE PERIODIC LOGO GLITCH LOOP
-    (function initSubtleLogoGlitch() {
-      const logo = document.getElementById('main-logo');
-      if (!logo) return;
+    // SUBTLE PERIODIC GLITCH SYSTEM FOR ALL KEY UI ELEMENTS
+    (function initSubtleGlitchEngine() {
+      const glitchElements = [
+        document.getElementById('main-logo'),
+        document.getElementById('sys-btn'),
+        document.getElementById('portfolio-btn')
+      ].filter(Boolean);
 
-      function triggerGlitch() {
-        logo.classList.add('logo-glitch');
-        
-        setTimeout(() => {
-          logo.classList.remove('logo-glitch');
-        }, 280);
+      function attachGlitchLoop(el, initialDelay) {
+        function triggerGlitch() {
+          el.classList.add('element-glitch');
+          
+          setTimeout(() => {
+            el.classList.remove('element-glitch');
+          }, 300);
 
-        // Schedule next subtle glitch between 4 and 8 seconds
-        const nextInterval = Math.floor(Math.random() * 4000) + 4000;
-        setTimeout(triggerGlitch, nextInterval);
+          // Slightly more frequent intervals: randomized between 2.5s and 5.5s
+          const nextInterval = Math.floor(Math.random() * 3000) + 2500;
+          setTimeout(triggerGlitch, nextInterval);
+        }
+
+        // Stagger initial trigger times across different elements
+        setTimeout(triggerGlitch, initialDelay);
       }
 
-      // Initial delay before first glitch triggers
-      setTimeout(triggerGlitch, 3000);
+      glitchElements.forEach((el, index) => {
+        attachGlitchLoop(el, 1500 + (index * 900));
+      });
     })();
 
     // Responsive Cyberpunk Tunnel Engine
