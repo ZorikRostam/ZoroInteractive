@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ZORO.DEV // CYBERPUNK PORTFOLIO</title>
+  
+  <!-- Cyberpunk Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-black: #060609;
+      --card-bg: rgba(12, 13, 20, 0.9);
+      --yellow: #facc15;
+      --purple: #a855f7;
+      --purple-glow: rgba(168, 85, 247, 0.4);
+      --cyan: #06b6d4;
+      --cyan-glow: rgba(6, 182, 212, 0.35);
+      --border-cyan: rgba(6, 182, 212, 0.4);
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Rajdhani', sans-serif;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background-color: var(--bg-black);
+      color: var(--text-main);
+      overflow-x: hidden;
+      background-image: radial-gradient(var(--cyan-glow) 1px, transparent 0);
+      background-size: 28px 28px;
+    }
+
+    /* Cyber Scanline overlay */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+      background-size: 100% 4px;
+      z-index: 99;
+      pointer-events: none;
+      opacity: 0.6;
+    }
+
+    /* Navigation Bar */
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      border-bottom: 2px solid var(--purple);
+      background: rgba(6, 6, 9, 0.95);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px var(--purple-glow);
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: var(--yellow);
+      text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
+      letter-spacing: 2px;
+      text-decoration: none;
+    }
+
+    nav ul {
+      display: flex;
+      gap: 1.2rem;
+      list-style: none;
+    }
+
+    nav a {
+      color: var(--text-main);
+      text-decoration: none;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 0.4rem 0.8rem;
+      border: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #fff;
+      border-color: var(--purple);
+      background: rgba(168, 85, 247, 0.2);
+      box-shadow: 0 0 12px var(--purple);
+    }
+
+    .btn-sys {
+      background: var(--purple);
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      padding: 0.5rem 1.2rem;
+      font-weight: 800;
+      font-size: 0.85rem;
+      text-decoration: none;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      transition: all 0.3s ease;
+    }
+
+    .btn-sys:hover {
+      background: var(--yellow);
+      color: #000;
+      box-shadow: 0 0 15px var(--yellow);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1250px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Top Module Status Bar */
+    .status-bar {
+      display: flex;
+      justify-content: space-between;
+      color: var(--cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 2px;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px dashed var(--border-cyan);
+      padding-bottom: 0.5rem;
+    }
+
+    /* Main Grid Layout */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.6fr 1fr;
+      gap: 2rem;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 900px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Featured Cyber Card */
+    .featured-card {
+      background: var(--card-bg);
+      border: 2px solid var(--cyan);
+      box-shadow: 0 0 25px var(--cyan-glow);
+      padding: 1.5rem;
+      position: relative;
+    }
+
+    .featured-card::before {
+      content: '';
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 16px; height: 16px;
+      border-top: 3px solid var(--yellow);
+      border-right: 3px solid var(--yellow);
+    }
+
+    .media-box {
+      width: 100%;
+      height: 320px;
+      background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, rgba(0,0,0,1) 90%);
+      border: 1px solid var(--border-cyan);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      color: var(--cyan);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.9rem;
+      letter-spacing: 1px;
+      margin-bottom: 1.5rem;
+    }
+
+    .hero-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2.2rem;
+      color: #fff;
+      font-weight: 900;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .hero-subtitle {
+      color: var(--purple);
+      font-size: 1.2rem;
+      margin: 0.3rem 0 1.5rem 0;
+      font-weight: 600;
+    }
+
+    .btn-cyber {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #4c1d95;
+      color: #fff;
+      border: 1px solid var(--purple);
+      padding: 0.8rem 1.8rem;
+      font-family: 'Orbitron', sans-serif;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .btn-cyber:hover {
+      background: var(--purple);
+      box-shadow: 0 0 20px var(--purple);
+      transform: translateY(-2px);
+    }
+
+    /* 2x2 Side Module Cards */
+    .side-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    .mini-card {
+      background: var(--card-bg);
+      border: 1px solid var(--border-cyan);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 200px;
+      transition: all 0.3s ease;
+    }
+
+    .mini-card:hover {
+      border-color: var(--yellow);
+      box-shadow: 0 0 18px rgba(250, 204, 21, 0.35);
+      transform: translateY(-3px);
+    }
+
+    .mini-icon {
+      font-size: 2.2rem;
+      color: var(--cyan);
+      margin-bottom: 0.8rem;
+    }
+
+    .mini-tag {
+      color: var(--cyan);
+      font-size: 0.75rem;
+      font-family: 'Orbitron', sans-serif;
+      letter-spacing: 1px;
+    }
+
+    .mini-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 800;
+      color: #fff;
+      margin-top: 0.4rem;
+    }
+
+    /* Section Headers */
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 4rem 0 2rem 0;
+    }
+
+    .section-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.8rem;
+      color: var(--yellow);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+    }
+
+    .section-line {
+      flex: 1;
+      height: 2px;
+      background: linear-gradient(90deg, var(--purple), transparent);
+    }
+
+    /* Projects Grid */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+    }
+
+    .project-card {
+      background: var(--card-bg);
+      border: 1px solid var(--purple);
+      padding: 1.8rem;
+      position: relative;
+      transition: all 0.3s ease;
+    }
+
+    .project-card:hover {
+      box-shadow: 0 0 25px var(--purple-glow);
+      transform: translateY(-5px);
+    }
+
+    .project-title {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 1.3rem;
+      color: #fff;
+      margin-bottom: 0.5rem;
+    }
+
+    .project-desc {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      line-height: 1.5;
+      margin-bottom: 1.2rem;
+    }
+
+    .tech-stack {
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+      margin-bottom: 1.5rem;
+    }
+
+    .tech-tag {
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid var(--cyan);
+      color: var(--cyan);
+      font-size: 0.75rem;
+      padding: 0.2rem 0.6rem;
+      font-family: 'Orbitron', sans-serif;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-cyan);
+      padding: 2.5rem 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.85rem;
+      margin-top: 5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header>
+    <a href="#" class="logo">ZORO.DEV</a>
+    <nav>
+      <ul>
+        <li><a href="#home">HOME</a></li>
+        <li><a href="#portfolio">PORTFOLIO</a></li>
+        <li><a href="#experience">WORK XP</a></li>
+        <li><a href="#awards">AWARDS</a></li>
+        <li><a href="#content">CONTENT</a></li>
+      </ul>
+    </nav>
+    <a href="#contact" class="btn-sys">SYSTEM /</a>
+  </header>
+
+  <div class="container" id="home">
+    
+    <!-- Cyber Status Line -->
+    <div class="status-bar">
+      <span>/// .NEWS.MODULE_HIGHLIGHT</span>
+      <span>16.08.2026</span>
+    </div>
+
+    <!-- Hero Showcase Section (Matches your layout draft) -->
+    <div class="hero-grid">
+      
+      <!-- Main Featured Media Box -->
+      <div class="featured-card">
+        <div class="media-box">
+          <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-bottom: 0.8rem;">
+            <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
+          </svg>
+          [ MAIN FEATURED MEDIA // GIF, VIDEO OR IMAGE ]
+        </div>
+        <h1 class="hero-title">ZORO DEV // INDIE GAMES</h1>
+        <p class="hero-subtitle">Create. Connect. Grow Together.</p>
+        <a href="#portfolio" class="btn-cyber">📁 ACCESS PORTFOLIO</a>
+      </div>
+
+      <!-- Right 2x2 Feature Modules -->
+      <div class="side-grid">
+        <div class="mini-card">
+          <div class="mini-icon">🎮</div>
+          <div>
+            <div class="mini-tag">NEWS_</div>
+            <div class="mini-title">PROJECT UPDATE // DEVLOG 01</div>
+          </div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-icon">📹</div>
+          <div>
+            <div class="mini-tag">NEWS_</div>
+            <div class="mini-title">RELEASED // NEW GAME TEASER</div>
+          </div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-icon">🏆</div>
+          <div>
+            <div class="mini-tag">NEWS_</div>
+            <div class="mini-title">JAM WINNER // AWARDS HIGHLIGHT</div>
+          </div>
+        </div>
+
+        <div class="mini-card">
+          <div class="mini-icon">&lt;/&gt;</div>
+          <div>
+            <div class="mini-tag">NEWS_</div>
+            <div class="mini-title">SYSTEM PATCH // PORTFOLIO LIVE</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Portfolio Section -->
+    <div id="portfolio">
+      <div class="section-header">
+        <h2 class="section-title">/// FEATURED PROJECTS</h2>
+        <div class="section-line"></div>
+      </div>
+
+      <div class="projects-grid">
+        <div class="project-card">
+          <h3 class="project-title">PROJECT NEON // CYBER ACTION</h3>
+          <p class="project-desc">Fast-paced indie action platformer featuring custom movement mechanics and dynamic synth lighting systems.</p>
+          <div class="tech-stack">
+            <span class="tech-tag">UNITY</span>
+            <span class="tech-tag">C#</span>
+            <span class="tech-tag">HLSL SHADERS</span>
+          </div>
+          <a href="#" class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">VIEW DEMO</a>
+        </div>
+
+        <div class="project-card">
+          <h3 class="project-title">SYSTEM PROTOCOL // GAME JAM</h3>
+          <p class="project-desc">Award-winning hackathon prototype focused on terminal puzzle solving and environmental narrative design.</p>
+          <div class="tech-stack">
+            <span class="tech-tag">GODOT</span>
+            <span class="tech-tag">GDSCRIPT</span>
+            <span class="tech-tag">FMOD</span>
+          </div>
+          <a href="#" class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">PLAY GAME</a>
+        </div>
+
+        <div class="project-card">
+          <h3 class="project-title">SHADOW ENGINE // TECH DEMO</h3>
+          <p class="project-desc">Custom rendering pipeline research project exploring real-time 2D pixel-art light propagation.</p>
+          <div class="tech-stack">
+            <span class="tech-tag">UNREAL 5</span>
+            <span class="tech-tag">C++</span>
+            <span class="tech-tag">GLSL</span>
+          </div>
+          <a href="#" class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">REPOS / CODE</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    <p>© 2026 ZORO.DEV // ALL RIGHTS RESERVED // DESIGNED FOR GITHUB PAGES</p>
+  </footer>
+
+</body>
+</html>
