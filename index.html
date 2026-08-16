@@ -12,7 +12,7 @@
 
   <style>
     :root {
-      --bg-black: #060609;
+      --bg-black: #040406;
       --card-bg: rgba(12, 13, 20, 0.9);
       --yellow: #facc15;
       --purple: #a855f7;
@@ -47,7 +47,7 @@
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
       background-size: 100% 4px;
       z-index: 90;
       pointer-events: none;
@@ -55,7 +55,7 @@
     }
 
     /* ==========================================
-       CPU PARTICLE SYSTEM LOADING SCREEN
+       GLITCH TUNNEL LOADING SCREEN
     ========================================== */
     #loading-screen {
       position: fixed;
@@ -65,10 +65,11 @@
       z-index: 9999;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      justify-content: flex-end;
       align-items: center;
-      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: all;
+      padding-bottom: 4rem;
+      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
 
     #loading-screen.fade-out {
@@ -76,101 +77,50 @@
       pointer-events: none;
     }
 
-    /* Particle Canvas Overlay */
-    #particle-canvas {
+    #tunnel-canvas {
       position: absolute;
       top: 0; left: 0;
       width: 100%; height: 100%;
       z-index: 1;
     }
 
-    .cpu-ui-container {
+    .loader-hud {
       position: relative;
       z-index: 2;
       display: flex;
       flex-direction: column;
       align-items: center;
-      transition: transform 0.8s ease, opacity 0.5s ease;
+      width: 100%;
+      max-width: 360px;
+      padding: 0 1rem;
+      transition: opacity 0.4s ease, transform 0.4s ease;
     }
-
-    .cpu-container {
-      position: relative;
-      width: 120px;
-      height: 120px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 1.5rem;
-    }
-
-    .cpu-ring {
-      position: absolute;
-      width: 100%; height: 100%;
-      border: 3px solid transparent;
-      border-top-color: var(--cyan);
-      border-bottom-color: var(--purple);
-      border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-      box-shadow: 0 0 15px var(--cyan-glow);
-    }
-
-    .cpu-ring-outer {
-      position: absolute;
-      width: 130%; height: 130%;
-      border: 2px dashed var(--yellow);
-      border-radius: 50%;
-      animation: spin-reverse 3s linear infinite;
-      opacity: 0.7;
-    }
-
-    .cpu-core {
-      width: 55px; height: 55px;
-      background: #0d0e15;
-      border: 2px solid var(--purple);
-      box-shadow: 0 0 20px var(--purple-glow);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
-    }
-
-    .cpu-core::before {
-      content: "CPU";
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      font-size: 0.8rem;
-      color: var(--yellow);
-      text-shadow: 0 0 8px var(--yellow);
-    }
-
-    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
 
     .loader-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.1rem;
+      font-size: 1rem;
       font-weight: 800;
       color: #fff;
-      letter-spacing: 3px;
+      letter-spacing: 4px;
       margin-bottom: 0.8rem;
+      text-shadow: 0 0 10px var(--cyan);
     }
 
     .loader-bar-box {
-      width: 300px;
-      height: 10px;
-      background: rgba(255, 255, 255, 0.05);
+      width: 100%;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.08);
       border: 1px solid var(--border-cyan);
-      padding: 2px;
-      box-shadow: 0 0 15px var(--cyan-glow);
+      box-shadow: 0 0 12px var(--cyan-glow);
       margin-bottom: 0.8rem;
     }
 
     .loader-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--yellow));
-      transition: width 0.2s ease;
-      box-shadow: 0 0 10px var(--cyan);
+      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--yellow));
+      transition: width 0.15s linear;
+      box-shadow: 0 0 12px var(--cyan);
     }
 
     .loader-status {
@@ -178,6 +128,7 @@
       font-size: 0.75rem;
       color: var(--cyan);
       letter-spacing: 2px;
+      text-shadow: 0 0 8px var(--cyan-glow);
     }
 
     /* Navigation Bar */
@@ -314,21 +265,16 @@
 </head>
 <body>
 
-  <!-- Cyberpunk Particle CPU Loading Screen -->
+  <!-- Cyberpunk Glitch Tunnel Loading Screen -->
   <div id="loading-screen">
-    <canvas id="particle-canvas"></canvas>
+    <canvas id="tunnel-canvas"></canvas>
     
-    <div class="cpu-ui-container" id="cpu-ui">
-      <div class="cpu-container">
-        <div class="cpu-ring-outer"></div>
-        <div class="cpu-ring"></div>
-        <div class="cpu-core"></div>
-      </div>
-      <div class="loader-title">ZORO_OS // BOOT SEQUENCE</div>
+    <div class="loader-hud" id="loader-hud">
+      <div class="loader-title">NEURAL LINK // SYNCING</div>
       <div class="loader-bar-box">
         <div class="loader-fill" id="loader-fill"></div>
       </div>
-      <div class="loader-status" id="loader-status">INITIALIZING QUANTUM CORE...</div>
+      <div class="loader-status" id="loader-status">INITIALIZING HYPERSPACE TUNNEL...</div>
     </div>
   </div>
 
@@ -515,129 +461,176 @@
   </footer>
 
   <script>
-    // Particle Engine & CPU Loading Sequence
-    (function initCyberLoader() {
-      const canvas = document.getElementById('particle-canvas');
+    // 3D Cyberpunk Voxel Glitch Tunnel Engine
+    (function initGlitchTunnel() {
+      const canvas = document.getElementById('tunnel-canvas');
       const ctx = canvas.getContext('2d');
-      let width = canvas.width = window.innerWidth;
-      let height = canvas.height = window.innerHeight;
+      let w = canvas.width = window.innerWidth;
+      let h = canvas.height = window.innerHeight;
 
       window.addEventListener('resize', () => {
-        width = canvas.width = window.innerWidth;
-        height = canvas.height = window.innerHeight;
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
       });
 
-      const colors = ['#facc15', '#a855f7', '#06b6d4'];
-      const particles = [];
-      const particleCount = 120;
-      let exploding = false;
+      let tunnelSpeed = 2.5;
+      let isHyperDrive = false;
 
-      class Particle {
-        constructor() {
-          this.reset();
-        }
-
-        reset() {
-          this.x = width / 2;
-          this.y = height / 2;
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 3 + 1;
-          this.vx = Math.cos(angle) * speed;
-          this.vy = Math.sin(angle) * speed;
-          this.radius = Math.random() * 2.5 + 1;
-          this.color = colors[Math.floor(Math.random() * colors.length)];
-          this.alpha = 1;
-          this.friction = 0.98;
-        }
-
-        explode() {
-          const angle = Math.random() * Math.PI * 2;
-          const speed = Math.random() * 18 + 5;
-          this.vx = Math.cos(angle) * speed;
-          this.vy = Math.sin(angle) * speed;
-          this.friction = 0.94;
-        }
-
-        update() {
-          this.x += this.vx;
-          this.y += this.vy;
-          this.vx *= this.friction;
-          this.vy *= this.friction;
-
-          if (exploding) {
-            this.alpha -= 0.02;
-          }
-        }
-
-        draw() {
-          ctx.save();
-          ctx.globalAlpha = Math.max(0, this.alpha);
-          ctx.fillStyle = this.color;
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = this.color;
-          ctx.beginPath();
-          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-          ctx.fill();
-          ctx.restore();
-        }
-      }
-
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle());
-      }
-
-      function render() {
-        ctx.clearRect(0, 0, width, height);
-        particles.forEach(p => {
-          p.update();
-          p.draw();
+      // Generate 3D Rectilinear Box Cubes around central axis
+      const cubes = [];
+      const count = 180;
+      for (let i = 0; i < count; i++) {
+        cubes.push({
+          x: (Math.random() - 0.5) * 1600,
+          y: (Math.random() - 0.5) * 1600,
+          z: Math.random() * 2000,
+          size: Math.random() * 45 + 25,
+          color: Math.random() > 0.4 ? 'rgba(30, 40, 80, ' : (Math.random() > 0.5 ? 'rgba(168, 85, 247, ' : 'rgba(250, 204, 21, ')
         });
-        requestAnimationFrame(render);
       }
 
-      render();
+      // Floating Cyber Dust & Wireframe Nodes
+      const particles = [];
+      for (let i = 0; i < 90; i++) {
+        particles.push({
+          x: (Math.random() - 0.5) * 1200,
+          y: (Math.random() - 0.5) * 1200,
+          z: Math.random() * 2000,
+          size: Math.random() * 3 + 1
+        });
+      }
 
-      // Loading steps sequence
+      function draw() {
+        ctx.fillStyle = 'rgba(4, 4, 6, 0.35)'; // Motion trail blur
+        ctx.fillRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = h / 2;
+
+        // Render Voxel Cubes in perspective
+        cubes.forEach(c => {
+          c.z -= tunnelSpeed;
+          if (c.z <= 10) c.z = 2000;
+
+          const scale = 400 / c.z;
+          const px = cx + c.x * scale;
+          const py = cy + c.y * scale;
+          const pw = c.size * scale;
+          const opacity = Math.min(1, (2000 - c.z) / 800);
+
+          if (px > -100 && px < w + 100 && py > -100 && py < h + 100) {
+            ctx.strokeStyle = c.color + opacity + ')';
+            ctx.lineWidth = Math.max(1, 2 * scale);
+            ctx.strokeRect(px - pw / 2, py - pw / 2, pw, pw);
+
+            // Subtle Glitch chromatic offset
+            if (Math.random() > 0.94) {
+              ctx.strokeStyle = 'rgba(6, 182, 212, ' + opacity * 0.8 + ')';
+              ctx.strokeRect(px - pw / 2 + (Math.random() * 8 - 4), py - pw / 2, pw, pw);
+            }
+          }
+        });
+
+        // Render Wire Particle Constellations
+        ctx.fillStyle = '#06b6d4';
+        particles.forEach(p => {
+          p.z -= tunnelSpeed * 1.5;
+          if (p.z <= 10) p.z = 2000;
+
+          const scale = 400 / p.z;
+          const px = cx + p.x * scale;
+          const py = cy + p.y * scale;
+
+          if (px > 0 && px < w && py > 0 && py < h) {
+            ctx.fillRect(px, py, p.size * scale, p.size * scale);
+          }
+        });
+
+        // Horizontal Glitch Line & Flare
+        ctx.save();
+        ctx.shadowBlur = isHyperDrive ? 40 : 20;
+        ctx.shadowColor = '#06b6d4';
+        
+        // Horizontal Flare Bar
+        const flareHeight = isHyperDrive ? 6 : 2;
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.9)';
+        ctx.fillRect(0, cy - flareHeight / 2, w, flareHeight);
+
+        // RGB Split Chromatic Lines along flare
+        if (Math.random() > 0.4) {
+          ctx.fillStyle = 'rgba(168, 85, 247, 0.6)';
+          ctx.fillRect(0, cy - 4, w, 1.5);
+          ctx.fillStyle = 'rgba(6, 182, 212, 0.6)';
+          ctx.fillRect(0, cy + 3, w, 1.5);
+        }
+
+        // Central Bright Quantum Core Light
+        const glowRadius = isHyperDrive ? 180 : 45;
+        const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, glowRadius);
+        grad.addColorStop(0, '#ffffff');
+        grad.addColorStop(0.3, '#06b6d4');
+        grad.addColorStop(0.7, 'rgba(168, 85, 247, 0.4)');
+        grad.addColorStop(1, 'transparent');
+        
+        ctx.fillStyle = grad;
+        ctx.beginPath();
+        ctx.arc(cx, cy, glowRadius, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.restore();
+
+        // Screen Glitch Tear artifact
+        if (Math.random() > 0.82) {
+          const glitchY = Math.random() * h;
+          const glitchH = Math.random() * 15 + 2;
+          ctx.drawImage(canvas, 0, glitchY, w, glitchH, (Math.random() - 0.5) * 20, glitchY, w, glitchH);
+        }
+
+        requestAnimationFrame(draw);
+      }
+
+      draw();
+
+      // Loading HUD sequence
       const fill = document.getElementById('loader-fill');
       const status = document.getElementById('loader-status');
       const loader = document.getElementById('loading-screen');
-      const cpuUi = document.getElementById('cpu-ui');
+      const hud = document.getElementById('loader-hud');
 
       const steps = [
-        { pct: '30%', text: 'OVERCLOCKING QUANTUM CORES...' },
-        { pct: '60%', text: 'CHARGING NEURAL PARTICLE FIELD...' },
-        { pct: '90%', text: 'COMPILING GRAPHICS SHADERS...' },
-        { pct: '100%', text: 'SYSTEM ONLINE // OPENING GATEWAY' }
+        { pct: '25%', text: 'INITIALIZING HYPERSPACE TUNNEL...' },
+        { pct: '55%', text: 'ESTABLISHING NEURAL FEED...' },
+        { pct: '85%', text: 'SYNCHRONIZING VOXEL MATRIX...' },
+        { pct: '100%', text: 'WARP READY // ACCESSING ZORO.DEV' }
       ];
 
       let step = 0;
-      const stepTimer = setInterval(() => {
+      const timer = setInterval(() => {
         if (step < steps.length) {
           fill.style.width = steps[step].pct;
           status.textContent = steps[step].text;
           step++;
         } else {
-          clearInterval(stepTimer);
+          clearInterval(timer);
 
-          // Trigger particle warp explosion & screen entry
+          // Launch hyperdrive warp burst into website
           setTimeout(() => {
-            exploding = true;
-            particles.forEach(p => p.explode());
-            cpuUi.style.transform = 'scale(1.3)';
-            cpuUi.style.opacity = '0';
+            isHyperDrive = true;
+            tunnelSpeed = 45; // Rapid tunnel acceleration
+            hud.style.opacity = '0';
+            hud.style.transform = 'scale(0.9)';
 
             setTimeout(() => {
               loader.classList.add('fade-out');
               setTimeout(() => {
                 loader.style.display = 'none';
               }, 800);
-            }, 500);
+            }, 600);
           }, 300);
         }
       }, 400);
     })();
 
-    // Navigation Tab Switching
+    // Navigation Switcher
     function switchPage(pageId) {
       const pages = document.querySelectorAll('.page-view');
       pages.forEach(p => p.classList.remove('active'));
