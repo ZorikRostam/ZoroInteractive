@@ -49,49 +49,63 @@
       top: 0; left: 0; width: 100%; height: 100%;
       background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
       background-size: 100% 4px;
-      z-index: 99;
+      z-index: 90;
       pointer-events: none;
       opacity: 0.6;
     }
 
     /* ==========================================
-       CPU CYBERPUNK LOADING SCREEN STYLES
+       CPU PARTICLE SYSTEM LOADING SCREEN
     ========================================== */
     #loading-screen {
       position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
       background: var(--bg-black);
       z-index: 9999;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
+      transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      pointer-events: all;
     }
 
     #loading-screen.fade-out {
       opacity: 0;
-      visibility: hidden;
+      pointer-events: none;
+    }
+
+    /* Particle Canvas Overlay */
+    #particle-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 1;
+    }
+
+    .cpu-ui-container {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.8s ease, opacity 0.5s ease;
     }
 
     .cpu-container {
       position: relative;
-      width: 130px;
-      height: 130px;
+      width: 120px;
+      height: 120px;
       display: flex;
       justify-content: center;
       align-items: center;
-      margin-bottom: 2rem;
+      margin-bottom: 1.5rem;
     }
 
-    /* Outer Spinning Neon Ring */
     .cpu-ring {
       position: absolute;
-      width: 100%;
-      height: 100%;
+      width: 100%; height: 100%;
       border: 3px solid transparent;
       border-top-color: var(--cyan);
       border-bottom-color: var(--purple);
@@ -102,56 +116,39 @@
 
     .cpu-ring-outer {
       position: absolute;
-      width: 125%;
-      height: 125%;
+      width: 130%; height: 130%;
       border: 2px dashed var(--yellow);
       border-radius: 50%;
       animation: spin-reverse 3s linear infinite;
       opacity: 0.7;
     }
 
-    /* Inner CPU Core Chip */
     .cpu-core {
-      width: 60px;
-      height: 60px;
+      width: 55px; height: 55px;
       background: #0d0e15;
       border: 2px solid var(--purple);
       box-shadow: 0 0 20px var(--purple-glow);
       display: flex;
       justify-content: center;
       align-items: center;
-      position: relative;
       clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
-      animation: pulse-core 1.5s infinite alternate;
     }
 
     .cpu-core::before {
       content: "CPU";
       font-family: 'Orbitron', sans-serif;
       font-weight: 900;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       color: var(--yellow);
       text-shadow: 0 0 8px var(--yellow);
     }
 
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spin-reverse {
-      0% { transform: rotate(360deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    @keyframes pulse-core {
-      0% { box-shadow: 0 0 10px var(--purple-glow); }
-      100% { box-shadow: 0 0 30px var(--purple), 0 0 40px var(--cyan); }
-    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    @keyframes spin-reverse { 0% { transform: rotate(360deg); } 100% { transform: rotate(0deg); } }
 
     .loader-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 800;
       color: #fff;
       letter-spacing: 3px;
@@ -159,26 +156,26 @@
     }
 
     .loader-bar-box {
-      width: 320px;
-      height: 12px;
+      width: 300px;
+      height: 10px;
       background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--border-cyan);
       padding: 2px;
       box-shadow: 0 0 15px var(--cyan-glow);
-      margin-bottom: 1rem;
+      margin-bottom: 0.8rem;
     }
 
     .loader-fill {
       width: 0%;
       height: 100%;
       background: linear-gradient(90deg, var(--purple), var(--cyan), var(--yellow));
-      transition: width 0.3s ease;
+      transition: width 0.2s ease;
       box-shadow: 0 0 10px var(--cyan);
     }
 
     .loader-status {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: var(--cyan);
       letter-spacing: 2px;
     }
@@ -204,15 +201,10 @@
       color: var(--yellow);
       text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
       letter-spacing: 2px;
-      text-decoration: none;
       cursor: pointer;
     }
 
-    nav ul {
-      display: flex;
-      gap: 0.5rem;
-      list-style: none;
-    }
+    nav ul { display: flex; gap: 0.5rem; list-style: none; }
 
     .nav-btn {
       background: transparent;
@@ -227,18 +219,8 @@
       transition: all 0.3s ease;
     }
 
-    .nav-btn:hover {
-      color: #fff;
-      border-color: var(--purple);
-      background: rgba(168, 85, 247, 0.2);
-    }
-
-    .nav-btn.active {
-      color: #fff;
-      border: 1px solid var(--purple);
-      background: rgba(168, 85, 247, 0.25);
-      box-shadow: 0 0 15px var(--purple);
-    }
+    .nav-btn:hover { color: #fff; border-color: var(--purple); background: rgba(168, 85, 247, 0.2); }
+    .nav-btn.active { color: #fff; border: 1px solid var(--purple); background: rgba(168, 85, 247, 0.25); box-shadow: 0 0 15px var(--purple); }
 
     .btn-sys {
       background: var(--purple);
@@ -247,48 +229,22 @@
       padding: 0.5rem 1.2rem;
       font-weight: 800;
       font-size: 0.85rem;
-      text-decoration: none;
       clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
       transition: all 0.3s ease;
+      text-decoration: none;
     }
 
-    .btn-sys:hover {
-      background: var(--yellow);
-      color: #000;
-      box-shadow: 0 0 15px var(--yellow);
-    }
+    .btn-sys:hover { background: var(--yellow); color: #000; box-shadow: 0 0 15px var(--yellow); }
 
-    /* Container & Layout */
-    .container {
-      max-width: 1250px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-      flex: 1;
-      width: 100%;
-    }
+    .container { max-width: 1250px; margin: 0 auto; padding: 2rem 1.5rem; flex: 1; width: 100%; }
 
-    .page-view {
-      display: none;
-      animation: fadeIn 0.4s ease-in-out forwards;
-    }
+    .page-view { display: none; animation: fadeIn 0.4s ease-in-out forwards; }
+    .page-view.active { display: block; }
 
-    .page-view.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
 
     .page-banner { margin-bottom: 2.5rem; }
-    .page-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 2px;
-    }
+    .page-title { font-family: 'Orbitron', sans-serif; font-size: 2.5rem; font-weight: 900; color: #fff; letter-spacing: 2px; }
     .page-subtitle { color: var(--purple); font-family: 'Orbitron', sans-serif; font-size: 1rem; margin-top: 0.3rem; }
     .page-desc { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.8rem; }
 
@@ -304,73 +260,35 @@
       padding-bottom: 0.5rem;
     }
 
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr;
-      gap: 2rem;
-      margin-bottom: 3rem;
-    }
-
+    .hero-grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 2rem; margin-bottom: 3rem; }
     @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
 
-    .featured-card {
-      background: var(--card-bg);
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 25px var(--cyan-glow);
-      padding: 1.5rem;
-    }
-
+    .featured-card { background: var(--card-bg); border: 2px solid var(--cyan); box-shadow: 0 0 25px var(--cyan-glow); padding: 1.5rem; }
     .media-box {
-      width: 100%;
-      height: 320px;
+      width: 100%; height: 320px;
       background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, rgba(0,0,0,1) 90%);
       border: 1px solid var(--border-cyan);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: var(--cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      color: var(--cyan); font-family: 'Orbitron', sans-serif; font-size: 0.9rem; margin-bottom: 1.5rem;
     }
 
     .hero-title { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; color: #fff; font-weight: 900; }
     .hero-subtitle { color: var(--purple); font-size: 1.2rem; margin: 0.3rem 0 1.5rem 0; font-weight: 600; }
 
     .btn-cyber {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #4c1d95;
-      color: #fff;
-      border: 1px solid var(--purple);
-      padding: 0.8rem 1.8rem;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: #4c1d95; color: #fff; border: 1px solid var(--purple);
+      padding: 0.8rem 1.8rem; font-family: 'Orbitron', sans-serif; font-weight: 700;
+      cursor: pointer; transition: all 0.3s ease;
     }
-
-    .btn-cyber:hover {
-      background: var(--purple);
-      box-shadow: 0 0 20px var(--purple);
-    }
+    .btn-cyber:hover { background: var(--purple); box-shadow: 0 0 20px var(--purple); }
 
     .side-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-
     .mini-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-cyan);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 200px;
-      transition: all 0.3s ease;
-      cursor: pointer;
+      background: var(--card-bg); border: 1px solid var(--border-cyan); padding: 1.5rem;
+      display: flex; flex-direction: column; justify-content: space-between; min-height: 200px;
+      transition: all 0.3s ease; cursor: pointer;
     }
-
     .mini-card:hover { border-color: var(--yellow); box-shadow: 0 0 18px rgba(250, 204, 21, 0.35); }
     .mini-icon { font-size: 2.2rem; color: var(--cyan); margin-bottom: 0.8rem; }
     .mini-tag { color: var(--cyan); font-size: 0.75rem; font-family: 'Orbitron', sans-serif; }
@@ -384,42 +302,37 @@
 
     .tech-stack { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
     .tech-tag {
-      background: rgba(6, 182, 212, 0.15);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      font-family: 'Orbitron', sans-serif;
+      background: rgba(6, 182, 212, 0.15); border: 1px solid var(--cyan); color: var(--cyan);
+      font-size: 0.75rem; padding: 0.2rem 0.6rem; font-family: 'Orbitron', sans-serif;
     }
 
     footer {
-      border-top: 1px solid var(--border-cyan);
-      padding: 2.5rem 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      margin-top: auto;
+      border-top: 1px solid var(--border-cyan); padding: 2.5rem 0; text-align: center;
+      color: var(--text-muted); font-family: 'Orbitron', sans-serif; font-size: 0.85rem; margin-top: auto;
     }
   </style>
 </head>
 <body>
 
-  <!-- CPU Cyberpunk Loading Screen Overlay -->
+  <!-- Cyberpunk Particle CPU Loading Screen -->
   <div id="loading-screen">
-    <div class="cpu-container">
-      <div class="cpu-ring-outer"></div>
-      <div class="cpu-ring"></div>
-      <div class="cpu-core"></div>
+    <canvas id="particle-canvas"></canvas>
+    
+    <div class="cpu-ui-container" id="cpu-ui">
+      <div class="cpu-container">
+        <div class="cpu-ring-outer"></div>
+        <div class="cpu-ring"></div>
+        <div class="cpu-core"></div>
+      </div>
+      <div class="loader-title">ZORO_OS // BOOT SEQUENCE</div>
+      <div class="loader-bar-box">
+        <div class="loader-fill" id="loader-fill"></div>
+      </div>
+      <div class="loader-status" id="loader-status">INITIALIZING QUANTUM CORE...</div>
     </div>
-    <div class="loader-title">ZORO_OS // BOOT SEQUENCE</div>
-    <div class="loader-bar-box">
-      <div class="loader-fill" id="loader-fill"></div>
-    </div>
-    <div class="loader-status" id="loader-status">INITIALIZING QUANTUM CORE...</div>
   </div>
 
-  <!-- Navigation -->
+  <!-- Navigation Bar -->
   <header>
     <div class="logo" onclick="switchPage('home')">ZORO.DEV</div>
     <nav>
@@ -602,690 +515,129 @@
   </footer>
 
   <script>
-    // CPU Loading Screen Sequence
-    window.addEventListener('DOMContentLoaded', () => {
-      const fill = document.getElementById('loader-fill');
-      const status = document.getElementById('loader-status');
-      const loader = document.getElementById('loading-screen');
+    // Particle Engine & CPU Loading Sequence
+    (function initCyberLoader() {
+      const canvas = document.getElementById('particle-canvas');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
 
-      const steps = [
-        { pct: '25%', text: 'OVERCLOCKING CPU CORES...' },
-        { pct: '55%', text: 'ALLOCATING SYSTEM MEMORY...' },
-        { pct: '85%', text: 'ESTABLISHING NEURAL LINK...' },
-        { pct: '100%', text: 'ACCESS GRANTED // ZORO_OS ONLINE' }
-      ];
-
-      let step = 0;
-      const interval = setInterval(() => {
-        if (step < steps.length) {
-          fill.style.width = steps[step].pct;
-          status.textContent = steps[step].text;
-          step++;
-        } else {
-          clearInterval(interval);
-          setTimeout(() => {
-            loader.classList.add('fade-out');
-          }, 300);
-        }
-      }, 350);
-    });
-
-    // Navigation Switcher
-    function switchPage(pageId) {
-      const pages = document.querySelectorAll('.page-view');
-      pages.forEach(p => p.classList.remove('active'));
-
-      const buttons = document.querySelectorAll('.nav-btn');
-      buttons.forEach(b => b.classList.remove('active'));
-
-      const targetPage = document.getElementById('page-' + pageId);
-      if (targetPage) {
-        targetPage.classList.add('active');
-      }
-
-      buttons.forEach(b => {
-        if (b.textContent.trim().toLowerCase().replace(' ', '-') === pageId) {
-          b.classList.add('active');
-        }
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
       });
 
-      window.scrollTo(0, 0);
-    }
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ZORO.DEV // CYBERPUNK PORTFOLIO</title>
-  
-  <!-- Cyberpunk Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+      const colors = ['#facc15', '#a855f7', '#06b6d4'];
+      const particles = [];
+      const particleCount = 120;
+      let exploding = false;
 
-  <style>
-    :root {
-      --bg-black: #060609;
-      --card-bg: rgba(12, 13, 20, 0.9);
-      --yellow: #facc15;
-      --purple: #a855f7;
-      --purple-glow: rgba(168, 85, 247, 0.4);
-      --cyan: #06b6d4;
-      --cyan-glow: rgba(6, 182, 212, 0.35);
-      --border-cyan: rgba(6, 182, 212, 0.4);
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-    }
+      class Particle {
+        constructor() {
+          this.reset();
+        }
 
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      font-family: 'Rajdhani', sans-serif;
-    }
+        reset() {
+          this.x = width / 2;
+          this.y = height / 2;
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 3 + 1;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
+          this.radius = Math.random() * 2.5 + 1;
+          this.color = colors[Math.floor(Math.random() * colors.length)];
+          this.alpha = 1;
+          this.friction = 0.98;
+        }
 
-    body {
-      background-color: var(--bg-black);
-      color: var(--text-main);
-      overflow-x: hidden;
-      background-image: radial-gradient(var(--cyan-glow) 1px, transparent 0);
-      background-size: 28px 28px;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
+        explode() {
+          const angle = Math.random() * Math.PI * 2;
+          const speed = Math.random() * 18 + 5;
+          this.vx = Math.cos(angle) * speed;
+          this.vy = Math.sin(angle) * speed;
+          this.friction = 0.94;
+        }
 
-    /* Cyber Scanline overlay */
-    body::before {
-      content: "";
-      position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.3) 50%);
-      background-size: 100% 4px;
-      z-index: 99;
-      pointer-events: none;
-      opacity: 0.6;
-    }
+        update() {
+          this.x += this.vx;
+          this.y += this.vy;
+          this.vx *= this.friction;
+          this.vy *= this.friction;
 
-    /* ==========================================
-       CPU CYBERPUNK LOADING SCREEN STYLES
-    ========================================== */
-    #loading-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: var(--bg-black);
-      z-index: 9999;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      transition: opacity 0.6s ease, visibility 0.6s ease;
-    }
+          if (exploding) {
+            this.alpha -= 0.02;
+          }
+        }
 
-    #loading-screen.fade-out {
-      opacity: 0;
-      visibility: hidden;
-    }
+        draw() {
+          ctx.save();
+          ctx.globalAlpha = Math.max(0, this.alpha);
+          ctx.fillStyle = this.color;
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = this.color;
+          ctx.beginPath();
+          ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+          ctx.fill();
+          ctx.restore();
+        }
+      }
 
-    .cpu-container {
-      position: relative;
-      width: 130px;
-      height: 130px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 2rem;
-    }
+      for (let i = 0; i < particleCount; i++) {
+        particles.push(new Particle());
+      }
 
-    /* Outer Spinning Neon Ring */
-    .cpu-ring {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border: 3px solid transparent;
-      border-top-color: var(--cyan);
-      border-bottom-color: var(--purple);
-      border-radius: 50%;
-      animation: spin 1.2s linear infinite;
-      box-shadow: 0 0 15px var(--cyan-glow);
-    }
+      function render() {
+        ctx.clearRect(0, 0, width, height);
+        particles.forEach(p => {
+          p.update();
+          p.draw();
+        });
+        requestAnimationFrame(render);
+      }
 
-    .cpu-ring-outer {
-      position: absolute;
-      width: 125%;
-      height: 125%;
-      border: 2px dashed var(--yellow);
-      border-radius: 50%;
-      animation: spin-reverse 3s linear infinite;
-      opacity: 0.7;
-    }
+      render();
 
-    /* Inner CPU Core Chip */
-    .cpu-core {
-      width: 60px;
-      height: 60px;
-      background: #0d0e15;
-      border: 2px solid var(--purple);
-      box-shadow: 0 0 20px var(--purple-glow);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      position: relative;
-      clip-path: polygon(15% 0, 85% 0, 100% 15%, 100% 85%, 85% 100%, 15% 100%, 0 85%, 0 15%);
-      animation: pulse-core 1.5s infinite alternate;
-    }
-
-    .cpu-core::before {
-      content: "CPU";
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 900;
-      font-size: 0.85rem;
-      color: var(--yellow);
-      text-shadow: 0 0 8px var(--yellow);
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    @keyframes spin-reverse {
-      0% { transform: rotate(360deg); }
-      100% { transform: rotate(0deg); }
-    }
-
-    @keyframes pulse-core {
-      0% { box-shadow: 0 0 10px var(--purple-glow); }
-      100% { box-shadow: 0 0 30px var(--purple), 0 0 40px var(--cyan); }
-    }
-
-    .loader-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 800;
-      color: #fff;
-      letter-spacing: 3px;
-      margin-bottom: 0.8rem;
-    }
-
-    .loader-bar-box {
-      width: 320px;
-      height: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid var(--border-cyan);
-      padding: 2px;
-      box-shadow: 0 0 15px var(--cyan-glow);
-      margin-bottom: 1rem;
-    }
-
-    .loader-fill {
-      width: 0%;
-      height: 100%;
-      background: linear-gradient(90deg, var(--purple), var(--cyan), var(--yellow));
-      transition: width 0.3s ease;
-      box-shadow: 0 0 10px var(--cyan);
-    }
-
-    .loader-status {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.8rem;
-      color: var(--cyan);
-      letter-spacing: 2px;
-    }
-
-    /* Navigation Bar */
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 5%;
-      border-bottom: 2px solid var(--purple);
-      background: rgba(6, 6, 9, 0.95);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 4px 20px var(--purple-glow);
-    }
-
-    .logo {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 1.8rem;
-      font-weight: 900;
-      color: var(--yellow);
-      text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
-      letter-spacing: 2px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    nav ul {
-      display: flex;
-      gap: 0.5rem;
-      list-style: none;
-    }
-
-    .nav-btn {
-      background: transparent;
-      color: var(--text-main);
-      border: 1px solid transparent;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      padding: 0.5rem 1rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .nav-btn:hover {
-      color: #fff;
-      border-color: var(--purple);
-      background: rgba(168, 85, 247, 0.2);
-    }
-
-    .nav-btn.active {
-      color: #fff;
-      border: 1px solid var(--purple);
-      background: rgba(168, 85, 247, 0.25);
-      box-shadow: 0 0 15px var(--purple);
-    }
-
-    .btn-sys {
-      background: var(--purple);
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      padding: 0.5rem 1.2rem;
-      font-weight: 800;
-      font-size: 0.85rem;
-      text-decoration: none;
-      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
-      transition: all 0.3s ease;
-    }
-
-    .btn-sys:hover {
-      background: var(--yellow);
-      color: #000;
-      box-shadow: 0 0 15px var(--yellow);
-    }
-
-    /* Container & Layout */
-    .container {
-      max-width: 1250px;
-      margin: 0 auto;
-      padding: 2rem 1.5rem;
-      flex: 1;
-      width: 100%;
-    }
-
-    .page-view {
-      display: none;
-      animation: fadeIn 0.4s ease-in-out forwards;
-    }
-
-    .page-view.active {
-      display: block;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .page-banner { margin-bottom: 2.5rem; }
-    .page-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 2.5rem;
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 2px;
-    }
-    .page-subtitle { color: var(--purple); font-family: 'Orbitron', sans-serif; font-size: 1rem; margin-top: 0.3rem; }
-    .page-desc { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.8rem; }
-
-    .status-bar {
-      display: flex;
-      justify-content: space-between;
-      color: var(--cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      letter-spacing: 2px;
-      margin-bottom: 1.5rem;
-      border-bottom: 1px dashed var(--border-cyan);
-      padding-bottom: 0.5rem;
-    }
-
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1.6fr 1fr;
-      gap: 2rem;
-      margin-bottom: 3rem;
-    }
-
-    @media (max-width: 900px) { .hero-grid { grid-template-columns: 1fr; } }
-
-    .featured-card {
-      background: var(--card-bg);
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 25px var(--cyan-glow);
-      padding: 1.5rem;
-    }
-
-    .media-box {
-      width: 100%;
-      height: 320px;
-      background: radial-gradient(circle, rgba(6,182,212,0.12) 0%, rgba(0,0,0,1) 90%);
-      border: 1px solid var(--border-cyan);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      color: var(--cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.9rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .hero-title { font-family: 'Orbitron', sans-serif; font-size: 2.2rem; color: #fff; font-weight: 900; }
-    .hero-subtitle { color: var(--purple); font-size: 1.2rem; margin: 0.3rem 0 1.5rem 0; font-weight: 600; }
-
-    .btn-cyber {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      background: #4c1d95;
-      color: #fff;
-      border: 1px solid var(--purple);
-      padding: 0.8rem 1.8rem;
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .btn-cyber:hover {
-      background: var(--purple);
-      box-shadow: 0 0 20px var(--purple);
-    }
-
-    .side-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
-
-    .mini-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border-cyan);
-      padding: 1.5rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      min-height: 200px;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-
-    .mini-card:hover { border-color: var(--yellow); box-shadow: 0 0 18px rgba(250, 204, 21, 0.35); }
-    .mini-icon { font-size: 2.2rem; color: var(--cyan); margin-bottom: 0.8rem; }
-    .mini-tag { color: var(--cyan); font-size: 0.75rem; font-family: 'Orbitron', sans-serif; }
-    .mini-title { font-family: 'Orbitron', sans-serif; font-size: 0.95rem; font-weight: 800; color: #fff; }
-
-    .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
-    .project-card { background: var(--card-bg); border: 1px solid var(--purple); padding: 1.8rem; transition: all 0.3s ease; }
-    .project-card:hover { box-shadow: 0 0 25px var(--purple-glow); transform: translateY(-4px); }
-    .project-title { font-family: 'Orbitron', sans-serif; font-size: 1.3rem; color: #fff; margin-bottom: 0.5rem; }
-    .project-desc { color: var(--text-muted); font-size: 1.05rem; line-height: 1.5; margin-bottom: 1.2rem; }
-
-    .tech-stack { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
-    .tech-tag {
-      background: rgba(6, 182, 212, 0.15);
-      border: 1px solid var(--cyan);
-      color: var(--cyan);
-      font-size: 0.75rem;
-      padding: 0.2rem 0.6rem;
-      font-family: 'Orbitron', sans-serif;
-    }
-
-    footer {
-      border-top: 1px solid var(--border-cyan);
-      padding: 2.5rem 0;
-      text-align: center;
-      color: var(--text-muted);
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.85rem;
-      margin-top: auto;
-    }
-  </style>
-</head>
-<body>
-
-  <!-- CPU Cyberpunk Loading Screen Overlay -->
-  <div id="loading-screen">
-    <div class="cpu-container">
-      <div class="cpu-ring-outer"></div>
-      <div class="cpu-ring"></div>
-      <div class="cpu-core"></div>
-    </div>
-    <div class="loader-title">ZORO_OS // BOOT SEQUENCE</div>
-    <div class="loader-bar-box">
-      <div class="loader-fill" id="loader-fill"></div>
-    </div>
-    <div class="loader-status" id="loader-status">INITIALIZING QUANTUM CORE...</div>
-  </div>
-
-  <!-- Navigation -->
-  <header>
-    <div class="logo" onclick="switchPage('home')">ZORO.DEV</div>
-    <nav>
-      <ul>
-        <li><button class="nav-btn active" onclick="switchPage('home')">HOME</button></li>
-        <li><button class="nav-btn" onclick="switchPage('portfolio')">PORTFOLIO</button></li>
-        <li><button class="nav-btn" onclick="switchPage('work-xp')">WORK XP</button></li>
-        <li><button class="nav-btn" onclick="switchPage('awards')">AWARDS</button></li>
-        <li><button class="nav-btn" onclick="switchPage('content')">CONTENT</button></li>
-      </ul>
-    </nav>
-    <a href="javascript:void(0)" onclick="switchPage('home')" class="btn-sys">SYSTEM // ONLINE</a>
-  </header>
-
-  <div class="container">
-    
-    <!-- PAGE 1: HOME -->
-    <div id="page-home" class="page-view active">
-      <div class="status-bar">
-        <span>/// .NEWS.MODULE_HIGHLIGHT</span>
-        <span>16.08.2026</span>
-      </div>
-
-      <div class="hero-grid">
-        <div class="featured-card">
-          <div class="media-box">
-            <svg width="48" height="48" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" style="margin-bottom: 0.8rem;">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 0 0 1.5-1.5V6a1.5 1.5 0 0 0-1.5-1.5H3.75A1.5 1.5 0 0 0 2.25 6v12a1.5 1.5 0 0 0 1.5 1.5Zm10.5-11.25h.008v.008h-.008V8.25Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z" />
-            </svg>
-            [ MAIN FEATURED MEDIA // GIF, VIDEO OR IMAGE ]
-          </div>
-          <h1 class="hero-title">ZORO DEV // INDIE GAMES</h1>
-          <p class="hero-subtitle">Create. Connect. Grow Together.</p>
-          <button class="btn-cyber" onclick="switchPage('portfolio')">📁 ACCESS PORTFOLIO</button>
-        </div>
-
-        <div class="side-grid">
-          <div class="mini-card" onclick="switchPage('content')">
-            <div class="mini-icon">🎮</div>
-            <div>
-              <div class="mini-tag">NEWS_</div>
-              <div class="mini-title">PROJECT UPDATE // DEVLOG 01</div>
-            </div>
-          </div>
-          <div class="mini-card" onclick="switchPage('content')">
-            <div class="mini-icon">📹</div>
-            <div>
-              <div class="mini-tag">NEWS_</div>
-              <div class="mini-title">RELEASED // NEW GAME TEASER</div>
-            </div>
-          </div>
-          <div class="mini-card" onclick="switchPage('awards')">
-            <div class="mini-icon">🏆</div>
-            <div>
-              <div class="mini-tag">NEWS_</div>
-              <div class="mini-title">JAM WINNER // AWARDS HIGHLIGHT</div>
-            </div>
-          </div>
-          <div class="mini-card" onclick="switchPage('portfolio')">
-            <div class="mini-icon">&lt;/&gt;</div>
-            <div>
-              <div class="mini-tag">NEWS_</div>
-              <div class="mini-title">SYSTEM PATCH // PORTFOLIO LIVE</div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 2: PORTFOLIO -->
-    <div id="page-portfolio" class="page-view">
-      <div class="page-banner">
-        <h1 class="page-title">PORTFOLIO</h1>
-        <p class="page-subtitle">// MY GAMES &amp; PROJECTS</p>
-        <p class="page-desc">Showcase your projects and game releases here.</p>
-      </div>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="project-title">PROJECT NEON // CYBER ACTION</h3>
-          <p class="project-desc">Fast-paced indie action platformer featuring custom movement mechanics and dynamic synth lighting systems.</p>
-          <div class="tech-stack">
-            <span class="tech-tag">UNITY</span>
-            <span class="tech-tag">C#</span>
-            <span class="tech-tag">HLSL SHADERS</span>
-          </div>
-          <button class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">VIEW DEMO</button>
-        </div>
-        <div class="project-card">
-          <h3 class="project-title">SYSTEM PROTOCOL // GAME JAM</h3>
-          <p class="project-desc">Award-winning hackathon prototype focused on terminal puzzle solving and environmental narrative design.</p>
-          <div class="tech-stack">
-            <span class="tech-tag">GODOT</span>
-            <span class="tech-tag">GDSCRIPT</span>
-            <span class="tech-tag">FMOD</span>
-          </div>
-          <button class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">PLAY GAME</button>
-        </div>
-        <div class="project-card">
-          <h3 class="project-title">SHADOW ENGINE // TECH DEMO</h3>
-          <p class="project-desc">Custom rendering pipeline research project exploring real-time 2D pixel-art light propagation.</p>
-          <div class="tech-stack">
-            <span class="tech-tag">UNREAL 5</span>
-            <span class="tech-tag">C++</span>
-            <span class="tech-tag">GLSL</span>
-          </div>
-          <button class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">REPOS / CODE</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 3: WORK XP -->
-    <div id="page-work-xp" class="page-view">
-      <div class="page-banner">
-        <h1 class="page-title">WORK EXPERIENCE</h1>
-        <p class="page-subtitle">// CAREER &amp; GAME DEV HISTORY</p>
-        <p class="page-desc">Detail your roles, responsibilities, and game studio experience here.</p>
-      </div>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="project-title">LEAD GAME DEVELOPER</h3>
-          <p class="project-desc">Indie Studio / 2024 - Present</p>
-          <p class="project-desc">Engineered core gameplay loops, optimized physics performance, and managed project releases across desktop platforms.</p>
-        </div>
-        <div class="project-card">
-          <h3 class="project-title">TECHNICAL ARTIST &amp; SHADER DEV</h3>
-          <p class="project-desc">Freelance / 2023 - 2024</p>
-          <p class="project-desc">Designed post-processing effects, retro CRT shaders, and particle FX systems for client titles.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 4: AWARDS -->
-    <div id="page-awards" class="page-view">
-      <div class="page-banner">
-        <h1 class="page-title">AWARDS &amp; ACHIEVEMENTS</h1>
-        <p class="page-subtitle">// GAME JAMS &amp; RECOGNITIONS</p>
-        <p class="page-desc">List your achievements, competition placements, and awards here.</p>
-      </div>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="project-title">🥇 1st PLACE - GLOBAL GAME JAM</h3>
-          <p class="project-desc">Awarded Best Visuals and Overall Gameplay for cyberpunk puzzle entry.</p>
-        </div>
-        <div class="project-card">
-          <h3 class="project-title">⭐ TOP 5 - INDIE DEV SHOWCASE</h3>
-          <p class="project-desc">Selected among 200+ submissions for technical innovation in custom game systems.</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- PAGE 5: CONTENT -->
-    <div id="page-content" class="page-view">
-      <div class="page-banner">
-        <h1 class="page-title">CONTENT</h1>
-        <p class="page-subtitle">// VIDEOS, DEVLOGS &amp; MEDIA</p>
-        <p class="page-desc">Embed YouTube videos, devlog updates, or social content here.</p>
-      </div>
-
-      <div class="projects-grid">
-        <div class="project-card">
-          <h3 class="project-title">DEVLOG #01: BUILDING A CYBER ENGINE</h3>
-          <p class="project-desc">A deep dive into architecture and visual effects for indie games.</p>
-          <button class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">WATCH VIDEO</button>
-        </div>
-        <div class="project-card">
-          <h3 class="project-title">DEVLOG #02: SHADER &amp; LIGHTING TECH</h3>
-          <p class="project-desc">Exploring custom lighting systems in real-time game development.</p>
-          <button class="btn-cyber" style="padding: 0.5rem 1rem; font-size: 0.8rem;">WATCH VIDEO</button>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <footer>
-    <p>© 2026 ZORO.DEV // ALL RIGHTS RESERVED // DESIGNED FOR GITHUB PAGES</p>
-  </footer>
-
-  <script>
-    // CPU Loading Screen Sequence
-    window.addEventListener('DOMContentLoaded', () => {
+      // Loading steps sequence
       const fill = document.getElementById('loader-fill');
       const status = document.getElementById('loader-status');
       const loader = document.getElementById('loading-screen');
+      const cpuUi = document.getElementById('cpu-ui');
 
       const steps = [
-        { pct: '25%', text: 'OVERCLOCKING CPU CORES...' },
-        { pct: '55%', text: 'ALLOCATING SYSTEM MEMORY...' },
-        { pct: '85%', text: 'ESTABLISHING NEURAL LINK...' },
-        { pct: '100%', text: 'ACCESS GRANTED // ZORO_OS ONLINE' }
+        { pct: '30%', text: 'OVERCLOCKING QUANTUM CORES...' },
+        { pct: '60%', text: 'CHARGING NEURAL PARTICLE FIELD...' },
+        { pct: '90%', text: 'COMPILING GRAPHICS SHADERS...' },
+        { pct: '100%', text: 'SYSTEM ONLINE // OPENING GATEWAY' }
       ];
 
       let step = 0;
-      const interval = setInterval(() => {
+      const stepTimer = setInterval(() => {
         if (step < steps.length) {
           fill.style.width = steps[step].pct;
           status.textContent = steps[step].text;
           step++;
         } else {
-          clearInterval(interval);
+          clearInterval(stepTimer);
+
+          // Trigger particle warp explosion & screen entry
           setTimeout(() => {
-            loader.classList.add('fade-out');
+            exploding = true;
+            particles.forEach(p => p.explode());
+            cpuUi.style.transform = 'scale(1.3)';
+            cpuUi.style.opacity = '0';
+
+            setTimeout(() => {
+              loader.classList.add('fade-out');
+              setTimeout(() => {
+                loader.style.display = 'none';
+              }, 800);
+            }, 500);
           }, 300);
         }
-      }, 350);
-    });
+      }, 400);
+    })();
 
-    // Navigation Switcher
+    // Navigation Tab Switching
     function switchPage(pageId) {
       const pages = document.querySelectorAll('.page-view');
       pages.forEach(p => p.classList.remove('active'));
