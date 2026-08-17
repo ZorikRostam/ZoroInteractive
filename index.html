@@ -34,6 +34,7 @@
 
     html {
       height: 100%;
+      overflow-y: scroll; /* Prevents scrollbar jumps */
     }
 
     body {
@@ -51,6 +52,7 @@
       font-size: clamp(15px, 1.1vw, 18px);
       line-height: 1.6;
       overflow-x: hidden;
+      position: relative;
     }
 
     /* Ambient CRT / Scanline effect */
@@ -170,6 +172,7 @@
       user-select: none;
       display: inline-block;
       transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow: hidden;
     }
     .logo:hover {
       transform: scale(1.02);
@@ -243,6 +246,7 @@
     }
 
     .btn-sys {
+      position: relative;
       background: var(--accent-white);
       color: #000;
       font-family: var(--font-heading);
@@ -256,6 +260,7 @@
       white-space: nowrap;
       display: inline-block;
       box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+      overflow: hidden;
     }
 
     .btn-sys:hover { 
@@ -329,6 +334,8 @@
       justify-content: space-between;
       backdrop-filter: blur(10px);
       transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
     }
 
     .featured-card:hover {
@@ -510,6 +517,7 @@
       transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1); 
       word-break: break-word;
       position: relative;
+      overflow: hidden;
     }
     
     .project-card:hover { 
@@ -859,7 +867,7 @@
 
     // Click Ripple Micro-interaction System
     document.addEventListener('click', function (e) {
-      const target = e.target.closest('button, .mini-card, .project-card, .btn-sys, .logo');
+      const target = e.target.closest('button, .mini-card, .project-card, .featured-card, .btn-sys, .logo');
       if (!target) return;
 
       const rect = target.getBoundingClientRect();
@@ -1111,7 +1119,6 @@
           activePage.classList.remove('active');
           if (targetPage) {
             targetPage.classList.add('active');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
             requestAnimationFrame(() => {
               targetPage.style.opacity = '1';
               targetPage.style.transform = 'translateY(0) scale(1)';
