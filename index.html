@@ -67,32 +67,44 @@
       opacity: 0.3;
     }
 
-    /* Loading Screen */
+    /* Sleek Split-Door Loading Screen */
     #loading-screen {
       position: fixed;
       top: 0; left: 0;
       width: 100vw; height: 100vh;
-      background: var(--bg-black);
       z-index: 9999;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
+      justify-content: center;
       align-items: center;
-      padding-bottom: clamp(2rem, 8vh, 5rem);
-      transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-      overflow: hidden;
+      pointer-events: all;
     }
 
-    #loading-screen.fade-out {
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    #tunnel-canvas {
+    .loader-panel-top,
+    .loader-panel-bottom {
       position: absolute;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
+      left: 0;
+      width: 100%;
+      height: 50vh;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
       z-index: 1;
+    }
+
+    .loader-panel-top {
+      top: 0;
+      background: #ffffff;
+    }
+
+    .loader-panel-bottom {
+      bottom: 0;
+      background: var(--bg-black);
+    }
+
+    #loading-screen.open .loader-panel-top {
+      transform: translateY(-100%);
+    }
+
+    #loading-screen.open .loader-panel-bottom {
+      transform: translateY(100%);
     }
 
     .loader-hud {
@@ -102,10 +114,16 @@
       flex-direction: column;
       align-items: center;
       width: 90%;
-      max-width: 450px;
+      max-width: 420px;
       padding: 0 1rem;
       transition: opacity 0.4s ease, transform 0.4s ease;
       text-align: center;
+    }
+
+    #loading-screen.open .loader-hud {
+      opacity: 0;
+      transform: scale(0.92);
+      pointer-events: none;
     }
 
     .loader-title {
@@ -114,15 +132,15 @@
       font-weight: 700;
       color: var(--accent-white);
       letter-spacing: clamp(2px, 1vw, 4px);
-      margin-bottom: 1rem;
+      margin-bottom: 1.2rem;
+      mix-blend-mode: difference; /* Keeps text visible across black/white boundary */
     }
 
     .loader-bar-box {
       width: 100%;
-      height: 6px;
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--card-border);
-      margin-bottom: 1rem;
+      height: 4px;
+      background: rgba(125, 125, 125, 0.3);
+      margin-bottom: 1.2rem;
       border-radius: 2px;
       overflow: hidden;
     }
@@ -130,16 +148,16 @@
     .loader-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, var(--grey-mid), var(--accent-white));
+      background: #ffffff;
       transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .loader-status {
       font-family: var(--font-heading);
       font-size: clamp(0.75rem, 1.8vw, 0.85rem);
-      color: var(--text-muted);
+      color: #888888;
       letter-spacing: 1px;
+      mix-blend-mode: difference;
     }
 
     /* Header & Nav */
@@ -618,16 +636,17 @@
 </head>
 <body>
 
-  <!-- Sleek Monochrome Loading Screen -->
+  <!-- Minimalist Split-Curtain Loading Screen -->
   <div id="loading-screen">
-    <canvas id="tunnel-canvas"></canvas>
+    <div class="loader-panel-top"></div>
+    <div class="loader-panel-bottom"></div>
     
     <div class="loader-hud" id="loader-hud">
-      <div class="loader-title">ZORO INTERACTIVE // LOADING</div>
+      <div class="loader-title">ZORO INTERACTIVE</div>
       <div class="loader-bar-box">
         <div class="loader-fill" id="loader-fill"></div>
       </div>
-      <div class="loader-status" id="loader-status">INITIALIZING SYSTEM CORE...</div>
+      <div class="loader-status" id="loader-status">INITIALIZING SYSTEM...</div>
     </div>
   </div>
 
@@ -916,116 +935,16 @@
       });
     })();
 
-    // Responsive Canvas Tunnel Engine
-    (function initGlitchTunnel() {
-      const canvas = document.getElementById('tunnel-canvas');
-      const ctx = canvas.getContext('2d');
-      let w, h;
-
-      function resizeCanvas() {
-        w = canvas.width = window.innerWidth;
-        h = canvas.height = window.innerHeight;
-      }
-      resizeCanvas();
-      window.addEventListener('resize', resizeCanvas);
-
-      let tunnelSpeed = 2.0;
-
-      const cubes = [];
-      const count = 180;
-      for (let i = 0; i < count; i++) {
-        cubes.push({
-          x: (Math.random() - 0.5) * 1800,
-          y: (Math.random() - 0.5) * 1800,
-          z: Math.random() * 2200,
-          size: Math.random() * 40 + 20,
-          color: Math.random() > 0.4 ? 'rgba(80, 80, 95, ' : (Math.random() > 0.5 ? 'rgba(160, 160, 175, ' : 'rgba(230, 230, 240, ')
-        });
-      }
-
-      const particles = [];
-      for (let i = 0; i < 120; i++) {
-        particles.push({
-          x: (Math.random() - 0.5) * 1400,
-          y: (Math.random() - 0.5) * 1400,
-          z: Math.random() * 2200,
-          size: Math.random() * 2.5 + 0.8,
-          alpha: Math.random() * 0.7 + 0.3
-        });
-      }
-
-      function draw() {
-        ctx.fillStyle = 'rgba(9, 9, 11, 0.22)';
-        ctx.fillRect(0, 0, w, h);
-
-        const cx = w / 2;
-        const cy = h / 2;
-
-        cubes.forEach(c => {
-          c.z -= tunnelSpeed;
-          if (c.z <= 10) c.z = 2200;
-
-          const scale = 420 / c.z;
-          const px = cx + c.x * scale;
-          const py = cy + c.y * scale;
-          const pw = c.size * scale;
-          const opacity = Math.min(0.85, (2200 - c.z) / 1000);
-
-          if (px > -100 && px < w + 100 && py > -100 && py < h + 100) {
-            ctx.strokeStyle = c.color + opacity + ')';
-            ctx.lineWidth = Math.max(0.8, 1.5 * scale);
-            ctx.strokeRect(px - pw / 2, py - pw / 2, pw, pw);
-
-            if (Math.random() > 0.96) {
-              ctx.strokeStyle = 'rgba(255, 255, 255, ' + opacity * 0.5 + ')';
-              ctx.strokeRect(px - pw / 2 + (Math.random() * 4 - 2), py - pw / 2, pw, pw);
-            }
-          }
-        });
-
-        particles.forEach(p => {
-          p.z -= tunnelSpeed * 1.3;
-          if (p.z <= 10) p.z = 2200;
-
-          const scale = 420 / p.z;
-          const px = cx + p.x * scale;
-          const py = cy + p.y * scale;
-          const pSize = p.size * scale;
-
-          if (px > 0 && px < w && py > 0 && py < h) {
-            ctx.fillStyle = 'rgba(255, 255, 255, ' + p.alpha * Math.min(1, scale * 1.2) + ')';
-            ctx.beginPath();
-            ctx.arc(px, py, Math.max(0.5, pSize), 0, Math.PI * 2);
-            ctx.fill();
-          }
-        });
-
-        ctx.save();
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
-        ctx.fillRect(0, cy - 0.5, w, 1);
-
-        if (Math.random() > 0.90) {
-          const glitchY = Math.random() * h;
-          const glitchH = Math.random() * 10 + 2;
-          ctx.drawImage(canvas, 0, glitchY, w, glitchH, (Math.random() - 0.5) * 10, glitchY, w, glitchH);
-        }
-        ctx.restore();
-
-        requestAnimationFrame(draw);
-      }
-
-      draw();
-
+    // Split-Door Curtain Entrance Sequence
+    (function initCurtainLoader() {
       const fill = document.getElementById('loader-fill');
       const status = document.getElementById('loader-status');
       const loader = document.getElementById('loading-screen');
-      const hud = document.getElementById('loader-hud');
 
       const steps = [
-        { pct: '25%', text: 'INITIALIZING SYSTEM CORE...' },
-        { pct: '55%', text: 'ESTABLISHING MODULES...' },
-        { pct: '85%', text: 'SYNCHRONIZING INTERFACE...' },
-        { pct: '100%', text: 'SYSTEM READY // ACCESSING PORTFOLIO' }
+        { pct: '30%', text: 'INITIALIZING...' },
+        { pct: '70%', text: 'SYNCHRONIZING...' },
+        { pct: '100%', text: 'WELCOME' }
       ];
 
       let step = 0;
@@ -1037,19 +956,13 @@
         } else {
           clearInterval(timer);
           setTimeout(() => {
-            tunnelSpeed = 35;
-            hud.style.opacity = '0';
-            hud.style.transform = 'scale(0.95)';
-
+            loader.classList.add('open');
             setTimeout(() => {
-              loader.classList.add('fade-out');
-              setTimeout(() => {
-                loader.style.display = 'none';
-              }, 800);
-            }, 500);
-          }, 300);
+              loader.style.display = 'none';
+            }, 850);
+          }, 250);
         }
-      }, 400);
+      }, 300);
     })();
 
     // Code Stream Generator
