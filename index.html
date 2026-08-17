@@ -5,30 +5,32 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
   <title>ZORO INTERACTIVE</title>
   
-  <!-- Cyberpunk Fonts -->
+  <!-- Sleek Modern Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600;700&family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <style>
     :root {
-      --bg-black: #040406;
-      --card-bg: rgba(12, 13, 20, 0.95);
-      --yellow: #facc15;
-      --purple: #a855f7;
-      --purple-glow: rgba(168, 85, 247, 0.4);
-      --cyan: #06b6d4;
-      --cyan-glow: rgba(6, 182, 212, 0.35);
-      --border-cyan: rgba(6, 182, 212, 0.4);
-      --text-main: #f9fafb;
-      --text-muted: #d1d5db;
+      --bg-black: #09090b;
+      --card-bg: rgba(18, 18, 22, 0.95);
+      --card-border: rgba(255, 255, 255, 0.12);
+      --accent-white: #ffffff;
+      --grey-light: #e4e4e7;
+      --grey-mid: #71717a;
+      --grey-dark: #27272a;
+      --border-glow: rgba(255, 255, 255, 0.15);
+      --text-main: #f4f4f5;
+      --text-muted: #a1a1aa;
+      --font-heading: 'Space Grotesk', sans-serif;
+      --font-body: 'Inter', sans-serif;
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'Rajdhani', sans-serif;
+      font-family: var(--font-body);
     }
 
     html {
@@ -41,25 +43,25 @@
       width: 100%;
       background-color: var(--bg-black);
       color: var(--text-main);
-      background-image: radial-gradient(var(--cyan-glow) 1px, transparent 0);
+      background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 0);
       background-size: 28px 28px;
       display: flex;
       flex-direction: column;
-      font-size: clamp(16px, 1.2vw, 19px);
-      line-height: 1.5;
+      font-size: clamp(15px, 1.1vw, 18px);
+      line-height: 1.6;
       overflow-x: hidden;
     }
 
-    /* Cyber Scanline overlay */
+    /* Subtle Scanline overlay */
     body::before {
       content: "";
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.35) 50%);
+      background: linear-gradient(rgba(18, 18, 18, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
       background-size: 100% 4px;
       z-index: 90;
       pointer-events: none;
-      opacity: 0.5;
+      opacity: 0.3;
     }
 
     /* Loading Screen */
@@ -104,38 +106,36 @@
     }
 
     .loader-title {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1rem, 3vw, 1.25rem);
-      font-weight: 800;
-      color: #fff;
+      font-family: var(--font-heading);
+      font-size: clamp(0.95rem, 2.5vw, 1.15rem);
+      font-weight: 700;
+      color: var(--accent-white);
       letter-spacing: clamp(2px, 1vw, 4px);
       margin-bottom: 1rem;
-      text-shadow: 0 0 10px var(--cyan);
     }
 
     .loader-bar-box {
       width: 100%;
-      height: 8px;
+      height: 6px;
       background: rgba(255, 255, 255, 0.08);
-      border: 1px solid var(--border-cyan);
-      box-shadow: 0 0 12px var(--cyan-glow);
+      border: 1px solid var(--card-border);
       margin-bottom: 1rem;
+      border-radius: 2px;
     }
 
     .loader-fill {
       width: 0%;
       height: 100%;
-      background: linear-gradient(90deg, var(--cyan), var(--purple), var(--yellow));
+      background: linear-gradient(90deg, var(--grey-mid), var(--accent-white));
       transition: width 0.2s cubic-bezier(0.25, 1, 0.5, 1);
-      box-shadow: 0 0 12px var(--cyan);
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
     }
 
     .loader-status {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.75rem, 2vw, 0.95rem);
-      color: var(--cyan);
+      font-family: var(--font-heading);
+      font-size: clamp(0.75rem, 1.8vw, 0.85rem);
+      color: var(--text-muted);
       letter-spacing: 1px;
-      text-shadow: 0 0 8px var(--cyan-glow);
     }
 
     /* Header & Responsive Nav */
@@ -145,25 +145,24 @@
       justify-content: space-between;
       align-items: center;
       gap: 1rem;
-      padding: 0.8rem 4%;
-      border-bottom: 2px solid var(--purple);
-      background: rgba(6, 6, 9, 0.95);
+      padding: 1rem 4%;
+      border-bottom: 1px solid var(--card-border);
+      background: rgba(12, 12, 15, 0.9);
+      backdrop-filter: blur(12px);
       position: sticky;
       top: 0;
       z-index: 100;
-      box-shadow: 0 4px 20px var(--purple-glow);
       flex-shrink: 0;
     }
 
     /* LOGO STYLING */
     .logo {
       position: relative;
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
-      font-weight: 900;
-      color: var(--yellow);
-      text-shadow: 0 0 12px rgba(250, 204, 21, 0.7);
-      letter-spacing: 2px;
+      font-family: var(--font-heading);
+      font-size: clamp(1.2rem, 2.2vw, 1.6rem);
+      font-weight: 700;
+      color: var(--accent-white);
+      letter-spacing: 1.5px;
       cursor: pointer;
       white-space: nowrap;
       user-select: none;
@@ -171,7 +170,7 @@
       will-change: transform, text-shadow;
     }
 
-    /* UNIFIED ENHANCED SUBTLE GLITCH KEYFRAMES */
+    /* MONOCHROMATIC SUBTLE GLITCH KEYFRAMES */
     @keyframes cyberGlitchSubtle {
       0% {
         transform: translate(0);
@@ -179,21 +178,19 @@
       }
       15% {
         transform: translate(-2px, 1px);
-        text-shadow: 2px 0 var(--cyan), -2px 0 var(--purple);
-        filter: drop-shadow(-2px 0 var(--cyan));
+        text-shadow: 2px 0 var(--accent-white), -2px 0 var(--grey-mid);
       }
       35% {
         transform: translate(2px, -1px);
-        text-shadow: -2px 0 var(--yellow), 2px 0 var(--cyan);
-        filter: drop-shadow(2px 0 var(--purple));
+        text-shadow: -2px 0 var(--grey-light), 2px 0 #52525b;
       }
       55% {
-        transform: translate(-1.5px, -0.5px);
-        text-shadow: 2px 0 var(--purple), -2px 0 var(--cyan);
+        transform: translate(-1px, -0.5px);
+        text-shadow: 1.5px 0 var(--accent-white), -1.5px 0 var(--grey-mid);
       }
       75% {
-        transform: translate(1px, 1.5px);
-        text-shadow: -2px 0 var(--cyan), 2px 0 var(--yellow);
+        transform: translate(1px, 1px);
+        text-shadow: -1px 0 var(--grey-light), 1px 0 var(--accent-white);
       }
       100% {
         transform: translate(0);
@@ -203,7 +200,7 @@
 
     /* GLITCH TRIGGER CLASS */
     .element-glitch {
-      animation: cyberGlitchSubtle 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+      animation: cyberGlitchSubtle 0.28s cubic-bezier(0.25, 1, 0.5, 1);
     }
 
     nav {
@@ -221,29 +218,31 @@
 
     .nav-btn {
       background: transparent;
-      color: var(--text-main);
+      color: var(--text-muted);
       border: 1px solid transparent;
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 1.2vw, 1rem);
-      font-weight: 700;
+      font-family: var(--font-heading);
+      font-size: clamp(0.75rem, 1.1vw, 0.9rem);
+      font-weight: 600;
       letter-spacing: 1px;
       padding: 0.4rem 0.8rem;
       cursor: pointer;
-      transition: all 0.3s ease;
+      transition: all 0.25s ease;
       white-space: nowrap;
+      border-radius: 4px;
     }
 
-    .nav-btn:hover { color: #fff; border-color: var(--purple); background: rgba(168, 85, 247, 0.2); }
-    .nav-btn.active { color: #fff; border: 1px solid var(--purple); background: rgba(168, 85, 247, 0.25); box-shadow: 0 0 15px var(--purple); }
+    .nav-btn:hover { color: var(--accent-white); background: rgba(255, 255, 255, 0.05); }
+    .nav-btn.active { color: var(--accent-white); border: 1px solid var(--card-border); background: rgba(255, 255, 255, 0.08); }
 
     .btn-sys {
-      background: var(--purple);
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
+      background: var(--accent-white);
+      color: #000;
+      font-family: var(--font-heading);
       padding: 0.5rem 1rem;
-      font-weight: 800;
-      font-size: clamp(0.8rem, 1vw, 0.95rem);
-      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      font-weight: 700;
+      font-size: clamp(0.75rem, 1vw, 0.85rem);
+      letter-spacing: 1px;
+      border-radius: 4px;
       transition: all 0.3s ease;
       text-decoration: none;
       white-space: nowrap;
@@ -251,13 +250,13 @@
       will-change: transform, text-shadow;
     }
 
-    .btn-sys:hover { background: var(--yellow); color: #000; box-shadow: 0 0 15px var(--yellow); }
+    .btn-sys:hover { background: var(--grey-light); box-shadow: 0 0 15px rgba(255, 255, 255, 0.25); }
 
     /* Layout Container */
     .container {
-      max-width: 1400px;
+      max-width: 1350px;
       margin: 0 auto;
-      padding: clamp(1rem, 2vh, 2rem) clamp(1rem, 3vw, 2rem);
+      padding: clamp(1.2rem, 3vh, 2.5rem) clamp(1rem, 3vw, 2rem);
       flex: 1 0 auto;
       width: 100%;
       display: flex;
@@ -268,25 +267,25 @@
     .page-view { display: none; animation: fadeIn 0.4s ease-in-out forwards; width: 100%; }
     .page-view.active { display: block; }
 
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
 
-    .page-banner { margin-bottom: 1.5rem; }
-    .page-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 4vw, 2.6rem); font-weight: 900; color: #fff; letter-spacing: 1px; word-break: break-word; }
-    .page-subtitle { color: var(--purple); font-family: 'Orbitron', sans-serif; font-size: clamp(1rem, 2vw, 1.15rem); margin-top: 0.2rem; }
-    .page-desc { color: var(--text-muted); font-size: clamp(1rem, 1.8vw, 1.15rem); margin-top: 0.6rem; line-height: 1.5; }
+    .page-banner { margin-bottom: 1.8rem; }
+    .page-title { font-family: var(--font-heading); font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 700; color: var(--accent-white); letter-spacing: -0.5px; word-break: break-word; }
+    .page-subtitle { color: var(--text-muted); font-family: var(--font-heading); font-size: clamp(0.9rem, 1.6vw, 1.05rem); margin-top: 0.2rem; }
+    .page-desc { color: var(--text-muted); font-size: clamp(0.95rem, 1.5vw, 1.05rem); margin-top: 0.6rem; line-height: 1.6; }
 
     .status-bar {
       display: flex;
       flex-wrap: wrap;
       gap: 0.5rem;
       justify-content: space-between;
-      color: var(--cyan);
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.75rem, 1.5vw, 0.95rem);
+      color: var(--text-muted);
+      font-family: var(--font-heading);
+      font-size: clamp(0.75rem, 1.3vw, 0.85rem);
       letter-spacing: 1px;
-      margin-bottom: 1.2rem;
-      border-bottom: 1px dashed var(--border-cyan);
-      padding-bottom: 0.4rem;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.5rem;
     }
 
     /* Grids */
@@ -299,9 +298,9 @@
 
     .featured-card {
       background: var(--card-bg);
-      border: 2px solid var(--cyan);
-      box-shadow: 0 0 25px var(--cyan-glow);
-      padding: clamp(1.2rem, 2.5vw, 1.8rem);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: clamp(1.4rem, 2.5vw, 2rem);
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -309,59 +308,60 @@
     }
     
     .about-box {
-      background: rgba(6, 182, 212, 0.08);
-      border: 1px solid var(--border-cyan);
-      padding: clamp(1rem, 2vw, 1.25rem);
-      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      padding: clamp(1.2rem, 2vw, 1.4rem);
+      margin-top: 1.2rem;
     }
     .about-box h3 {
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(1.1rem, 2vw, 1.25rem);
-      color: var(--yellow);
-      margin-bottom: 0.5rem;
-      letter-spacing: 1px;
+      font-family: var(--font-heading);
+      font-size: clamp(1rem, 1.8vw, 1.15rem);
+      color: var(--accent-white);
+      margin-bottom: 0.6rem;
+      letter-spacing: 0.5px;
     }
     .about-box p {
-      color: var(--text-main);
-      font-size: clamp(1rem, 1.8vw, 1.15rem);
-      line-height: 1.5;
+      color: var(--text-muted);
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      line-height: 1.6;
     }
 
-    .hero-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.8rem, 3.5vw, 2.4rem); color: #fff; font-weight: 900; line-height: 1.2; }
-    .hero-subtitle { color: var(--purple); font-size: clamp(1.1rem, 2vw, 1.25rem); margin: 0.2rem 0 0.8rem 0; font-weight: 700; }
+    .hero-title { font-family: var(--font-heading); font-size: clamp(1.8rem, 3.2vw, 2.3rem); color: var(--accent-white); font-weight: 700; line-height: 1.2; letter-spacing: -0.5px; }
+    .hero-subtitle { color: var(--text-muted); font-size: clamp(1rem, 1.8vw, 1.15rem); margin: 0.3rem 0 0.8rem 0; font-weight: 500; }
 
     .btn-cyber {
       display: inline-flex; align-items: center; justify-content: center; gap: 0.6rem;
-      background: #4c1d95; color: #fff; border: 1px solid var(--purple);
-      padding: 0.8rem 1.6rem; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: clamp(0.85rem, 1.5vw, 1rem);
-      cursor: pointer; transition: all 0.3s ease; margin-top: 1rem; width: fit-content; max-width: 100%;
+      background: var(--accent-white); color: #000; border: 1px solid var(--accent-white);
+      padding: 0.75rem 1.5rem; font-family: var(--font-heading); font-weight: 700; font-size: clamp(0.8rem, 1.3vw, 0.95rem);
+      cursor: pointer; transition: all 0.25s ease; margin-top: 1.5rem; width: fit-content; max-width: 100%; border-radius: 4px;
       will-change: transform, text-shadow;
     }
-    .btn-cyber:hover { background: var(--purple); box-shadow: 0 0 20px var(--purple); }
+    .btn-cyber:hover { background: var(--grey-light); box-shadow: 0 0 15px rgba(255, 255, 255, 0.2); }
 
     .right-col {
       display: flex;
       flex-direction: column;
-      gap: 1rem;
+      gap: 1.2rem;
     }
 
     .side-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
     .mini-card {
-      background: var(--card-bg); border: 1px solid var(--border-cyan); padding: clamp(1rem, 1.5vw, 1.25rem);
-      display: flex; flex-direction: column; justify-content: space-between; min-height: 120px;
-      transition: all 0.3s ease; cursor: pointer; word-break: break-word;
+      background: var(--card-bg); border: 1px solid var(--card-border); padding: clamp(1rem, 1.5vw, 1.25rem);
+      border-radius: 6px; display: flex; flex-direction: column; justify-content: space-between; min-height: 120px;
+      transition: all 0.25s ease; cursor: pointer; word-break: break-word;
     }
-    .mini-card:hover { border-color: var(--yellow); box-shadow: 0 0 18px rgba(250, 204, 21, 0.35); }
-    .mini-icon { font-size: clamp(1.6rem, 2.5vw, 2rem); color: var(--cyan); margin-bottom: 0.4rem; }
-    .mini-tag { color: var(--cyan); font-size: clamp(0.75rem, 1.2vw, 0.85rem); font-family: 'Orbitron', sans-serif; }
-    .mini-title { font-family: 'Orbitron', sans-serif; font-size: clamp(0.85rem, 1.3vw, 1rem); font-weight: 800; color: #fff; line-height: 1.3; }
+    .mini-card:hover { border-color: rgba(255, 255, 255, 0.35); background: rgba(255, 255, 255, 0.04); transform: translateY(-2px); }
+    .mini-icon { font-size: clamp(1.4rem, 2.2vw, 1.8rem); color: var(--accent-white); margin-bottom: 0.4rem; }
+    .mini-tag { color: var(--text-muted); font-size: clamp(0.7rem, 1.1vw, 0.8rem); font-family: var(--font-heading); font-weight: 600; }
+    .mini-title { font-family: var(--font-heading); font-size: clamp(0.85rem, 1.2vw, 0.95rem); font-weight: 600; color: var(--accent-white); line-height: 1.3; }
 
-    /* CYBERPUNK GLITCH CODE STREAM TERMINAL */
+    /* SLEEK CODE STREAM TERMINAL */
     .cyber-terminal {
-      background: rgba(8, 10, 18, 0.95);
-      border: 1px solid var(--purple);
-      border-left: 4px solid var(--cyan);
-      box-shadow: 0 0 20px var(--purple-glow);
+      background: rgba(14, 14, 17, 0.95);
+      border: 1px solid var(--card-border);
+      border-left: 3px solid var(--accent-white);
+      border-radius: 6px;
       padding: 0.8rem 1rem;
       position: relative;
       overflow: hidden;
@@ -376,12 +376,12 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 1px solid rgba(6, 182, 212, 0.3);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
       padding-bottom: 0.4rem;
       margin-bottom: 0.6rem;
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.7rem, 1.1vw, 0.8rem);
-      color: var(--cyan);
+      font-family: var(--font-heading);
+      font-size: clamp(0.7rem, 1vw, 0.78rem);
+      color: var(--text-muted);
     }
 
     .terminal-dots {
@@ -389,15 +389,15 @@
       gap: 6px;
     }
     .terminal-dot { width: 8px; height: 8px; border-radius: 50%; }
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #facc15; }
-    .dot-green { background: #22c55e; }
+    .dot-red { background: #52525b; }
+    .dot-yellow { background: #71717a; }
+    .dot-green { background: #a1a1aa; }
 
     .code-body {
       font-family: 'Fira Code', monospace;
-      font-size: clamp(0.75rem, 1.05vw, 0.85rem);
-      line-height: 1.45;
-      color: #38bdf8;
+      font-size: clamp(0.75rem, 1vw, 0.85rem);
+      line-height: 1.5;
+      color: var(--text-main);
       overflow-y: hidden;
       max-height: 150px;
       position: relative;
@@ -406,32 +406,30 @@
 
     /* Code Terminal Glitch Animations */
     @keyframes cyberGlitch {
-      0% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--purple); transform: translate(0); }
-      20% { text-shadow: -2px 0 var(--yellow), 2px 0 var(--cyan); transform: translate(-1px, 1px); }
-      40% { text-shadow: 2px 0 var(--purple), -2px 0 var(--cyan); transform: translate(1px, -1px); }
-      60% { text-shadow: -1px 0 var(--cyan), 1px 0 var(--yellow); transform: translate(0); }
-      80% { text-shadow: 2px 0 var(--cyan), -2px 0 var(--purple); transform: translate(-1px, 0); }
-      100% { text-shadow: 1px 0 var(--cyan), -1px 0 var(--purple); transform: translate(0); }
+      0% { text-shadow: 1.5px 0 var(--accent-white), -1.5px 0 var(--grey-mid); transform: translate(0); }
+      30% { text-shadow: -1.5px 0 var(--grey-light), 1.5px 0 var(--accent-white); transform: translate(-1px, 1px); }
+      70% { text-shadow: 1.5px 0 var(--grey-mid), -1.5px 0 var(--accent-white); transform: translate(1px, -1px); }
+      100% { text-shadow: 0 0 transparent; transform: translate(0); }
     }
 
     .glitch-active {
       animation: cyberGlitch 0.25s infinite linear;
     }
 
-    /* Code Syntax Colors */
-    .kw { color: #facc15; font-weight: 700; }
-    .fn { color: #a855f7; font-weight: 600; }
-    .str { color: #4ade80; }
-    .num { color: #f43f5e; }
-    .cm { color: #64748b; font-style: italic; }
+    /* Monochrome Syntax Colors */
+    .kw { color: #ffffff; font-weight: 700; }
+    .fn { color: #e4e4e7; font-weight: 600; }
+    .str { color: #a1a1aa; }
+    .num { color: #d4d4d8; }
+    .cm { color: #71717a; font-style: italic; }
     .cursor {
       display: inline-block;
-      width: 7px;
-      height: 14px;
-      background: var(--cyan);
+      width: 6px;
+      height: 13px;
+      background: var(--accent-white);
       vertical-align: middle;
       animation: blink 0.7s infinite;
-      box-shadow: 0 0 8px var(--cyan);
+      box-shadow: 0 0 6px rgba(255, 255, 255, 0.6);
     }
 
     @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
@@ -443,63 +441,64 @@
     }
     .project-card { 
       background: var(--card-bg); 
-      border: 1px solid var(--purple); 
+      border: 1px solid var(--card-border); 
+      border-radius: 8px;
       padding: clamp(1.2rem, 2vw, 1.8rem); 
-      transition: all 0.3s ease; 
+      transition: all 0.25s ease; 
       word-break: break-word;
     }
-    .project-card:hover { box-shadow: 0 0 25px var(--purple-glow); transform: translateY(-4px); }
-    .project-title { font-family: 'Orbitron', sans-serif; font-size: clamp(1.2rem, 2.2vw, 1.4rem); color: #fff; margin-bottom: 0.6rem; letter-spacing: 1px; }
-    .project-desc { color: var(--text-muted); font-size: clamp(1rem, 1.8vw, 1.15rem); line-height: 1.5; margin-bottom: 0.8rem; }
+    .project-card:hover { border-color: rgba(255, 255, 255, 0.3); transform: translateY(-3px); }
+    .project-title { font-family: var(--font-heading); font-size: clamp(1.1rem, 2vw, 1.3rem); color: var(--accent-white); margin-bottom: 0.6rem; font-weight: 700; }
+    .project-desc { color: var(--text-muted); font-size: clamp(0.95rem, 1.5vw, 1.05rem); line-height: 1.5; margin-bottom: 0.8rem; }
 
     .custom-list { list-style-type: none; padding-left: 0; }
     .custom-list li {
       position: relative;
-      padding-left: 1.5rem;
+      padding-left: 1.4rem;
       margin-bottom: 0.6rem;
       color: var(--text-main);
-      font-size: clamp(1rem, 1.8vw, 1.15rem);
-      line-height: 1.4;
+      font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+      line-height: 1.5;
       word-break: break-word;
     }
     .custom-list li::before {
-      content: "►";
+      content: "—";
       position: absolute;
       left: 0;
-      color: var(--cyan);
-      font-size: 0.85rem;
-      top: 2px;
+      color: var(--text-muted);
+      font-weight: 700;
     }
 
     .tech-stack { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 1rem; }
     .tech-tag {
-      background: rgba(6, 182, 212, 0.15); border: 1px solid var(--cyan); color: var(--cyan);
-      font-size: clamp(0.75rem, 1.2vw, 0.9rem); padding: 0.3rem 0.75rem; font-family: 'Orbitron', sans-serif; font-weight: 600;
-      white-space: nowrap;
+      background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-main);
+      font-size: clamp(0.7rem, 1.1vw, 0.8rem); padding: 0.25rem 0.65rem; font-family: var(--font-heading); font-weight: 600;
+      border-radius: 4px; white-space: nowrap;
     }
 
     .result-badge {
       display: inline-block;
-      background: rgba(250, 204, 21, 0.15);
-      border: 1px solid var(--yellow);
-      color: var(--yellow);
-      font-family: 'Orbitron', sans-serif;
-      font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: var(--accent-white);
+      font-family: var(--font-heading);
+      font-size: clamp(0.75rem, 1.3vw, 0.85rem);
       padding: 0.4rem 0.8rem;
       margin-top: 0.6rem;
       font-weight: 700;
+      border-radius: 4px;
       max-width: 100%;
       word-break: break-word;
     }
 
     /* Footer Sticky positioning */
     footer {
-      border-top: 1px solid var(--border-cyan); 
-      padding: 1.2rem 1rem; 
+      border-top: 1px solid var(--card-border); 
+      padding: 1.4rem 1rem; 
       text-align: center;
       color: var(--text-muted); 
-      font-family: 'Orbitron', sans-serif; 
-      font-size: clamp(0.8rem, 1.2vw, 0.9rem); 
+      font-family: var(--font-heading); 
+      font-size: clamp(0.75rem, 1.1vw, 0.85rem); 
       margin-top: auto;
       flex-shrink: 0;
       width: 100%;
@@ -523,16 +522,16 @@
 </head>
 <body>
 
-  <!-- Cyberpunk Glitch Tunnel Loading Screen -->
+  <!-- Sleek Monochrome Loading Screen -->
   <div id="loading-screen">
     <canvas id="tunnel-canvas"></canvas>
     
     <div class="loader-hud" id="loader-hud">
-      <div class="loader-title">NEURAL LINK // SYNCING</div>
+      <div class="loader-title">ZORO INTERACTIVE // LOADING</div>
       <div class="loader-bar-box">
         <div class="loader-fill" id="loader-fill"></div>
       </div>
-      <div class="loader-status" id="loader-status">INITIALIZING HYPERSPACE TUNNEL...</div>
+      <div class="loader-status" id="loader-status">INITIALIZING SYSTEM Core...</div>
     </div>
   </div>
 
@@ -573,10 +572,10 @@
             </div>
           </div>
 
-          <button class="btn-cyber" id="portfolio-btn" onclick="switchPage('portfolio')">📁 ACCESS PORTFOLIO</button>
+          <button class="btn-cyber" id="portfolio-btn" onclick="switchPage('portfolio')">ACCESS PORTFOLIO</button>
         </div>
 
-        <!-- Right Column (Cards + Cyberpunk Code Terminal) -->
+        <!-- Right Column (Cards + Code Terminal) -->
         <div class="right-col">
           <div class="side-grid">
             <div class="mini-card" onclick="switchPage('work-xp')">
@@ -609,7 +608,7 @@
             </div>
           </div>
 
-          <!-- Live Animated Cyberpunk Glitch Terminal -->
+          <!-- Live Code Stream Terminal -->
           <div class="cyber-terminal" id="terminal-box">
             <div class="terminal-header">
               <div class="terminal-dots">
@@ -745,12 +744,12 @@
         <div class="project-card">
           <h3 class="project-title">VIDEO EDITING SHOWREEL</h3>
           <p class="project-desc">Demonstration of video editing skills, audio synchronization, and visual pacing.</p>
-          <button class="btn-cyber" style="padding: 0.5rem 1.2rem; font-size: 0.9rem; margin-top: 0.4rem;">WATCH SHOWREEL</button>
+          <button class="btn-cyber" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; margin-top: 0.4rem;">WATCH SHOWREEL</button>
         </div>
         <div class="project-card">
           <h3 class="project-title">GAME DEVLOG HIGHLIGHTS</h3>
           <p class="project-desc">Overview of technical development, UI workflows, and coding iteration for games.</p>
-          <button class="btn-cyber" style="padding: 0.5rem 1.2rem; font-size: 0.9rem; margin-top: 0.4rem;">WATCH DEVLOG</button>
+          <button class="btn-cyber" style="padding: 0.5rem 1.2rem; font-size: 0.85rem; margin-top: 0.4rem;">WATCH DEVLOG</button>
         </div>
       </div>
     </div>
@@ -774,7 +773,7 @@
       }
     })();
 
-    // SUBTLE PERIODIC GLITCH SYSTEM FOR ALL KEY UI ELEMENTS
+    // SUBTLE PERIODIC GLITCH SYSTEM (GREY/WHITE MONOCHROME)
     (function initSubtleGlitchEngine() {
       const glitchElements = [
         document.getElementById('main-logo'),
@@ -788,14 +787,12 @@
           
           setTimeout(() => {
             el.classList.remove('element-glitch');
-          }, 300);
+          }, 280);
 
-          // Slightly more frequent intervals: randomized between 2.5s and 5.5s
-          const nextInterval = Math.floor(Math.random() * 3000) + 2500;
+          const nextInterval = Math.floor(Math.random() * 3000) + 2800;
           setTimeout(triggerGlitch, nextInterval);
         }
 
-        // Stagger initial trigger times across different elements
         setTimeout(triggerGlitch, initialDelay);
       }
 
@@ -804,7 +801,7 @@
       });
     })();
 
-    // Responsive Cyberpunk Tunnel Engine
+    // Responsive Monochrome Tunnel Engine
     (function initGlitchTunnel() {
       const canvas = document.getElementById('tunnel-canvas');
       const ctx = canvas.getContext('2d');
@@ -827,7 +824,7 @@
           y: (Math.random() - 0.5) * 1800,
           z: Math.random() * 2200,
           size: Math.random() * 40 + 20,
-          color: Math.random() > 0.4 ? 'rgba(30, 40, 80, ' : (Math.random() > 0.5 ? 'rgba(168, 85, 247, ' : 'rgba(6, 182, 212, ')
+          color: Math.random() > 0.4 ? 'rgba(80, 80, 95, ' : (Math.random() > 0.5 ? 'rgba(160, 160, 175, ' : 'rgba(230, 230, 240, ')
         });
       }
 
@@ -843,7 +840,7 @@
       }
 
       function draw() {
-        ctx.fillStyle = 'rgba(4, 4, 6, 0.22)';
+        ctx.fillStyle = 'rgba(9, 9, 11, 0.22)';
         ctx.fillRect(0, 0, w, h);
 
         const cx = w / 2;
@@ -857,15 +854,15 @@
           const px = cx + c.x * scale;
           const py = cy + c.y * scale;
           const pw = c.size * scale;
-          const opacity = Math.min(0.95, (2200 - c.z) / 900);
+          const opacity = Math.min(0.85, (2200 - c.z) / 1000);
 
           if (px > -100 && px < w + 100 && py > -100 && py < h + 100) {
             ctx.strokeStyle = c.color + opacity + ')';
-            ctx.lineWidth = Math.max(0.8, 1.8 * scale);
+            ctx.lineWidth = Math.max(0.8, 1.5 * scale);
             ctx.strokeRect(px - pw / 2, py - pw / 2, pw, pw);
 
             if (Math.random() > 0.96) {
-              ctx.strokeStyle = 'rgba(6, 182, 212, ' + opacity * 0.6 + ')';
+              ctx.strokeStyle = 'rgba(255, 255, 255, ' + opacity * 0.5 + ')';
               ctx.strokeRect(px - pw / 2 + (Math.random() * 4 - 2), py - pw / 2, pw, pw);
             }
           }
@@ -881,7 +878,7 @@
           const pSize = p.size * scale;
 
           if (px > 0 && px < w && py > 0 && py < h) {
-            ctx.fillStyle = 'rgba(6, 182, 212, ' + p.alpha * Math.min(1, scale * 1.5) + ')';
+            ctx.fillStyle = 'rgba(255, 255, 255, ' + p.alpha * Math.min(1, scale * 1.2) + ')';
             ctx.beginPath();
             ctx.arc(px, py, Math.max(0.5, pSize), 0, Math.PI * 2);
             ctx.fill();
@@ -889,13 +886,13 @@
         });
 
         ctx.save();
-        ctx.fillStyle = 'rgba(6, 182, 212, 0.5)';
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
         ctx.fillRect(0, cy - 0.5, w, 1);
 
-        if (Math.random() > 0.88) {
+        if (Math.random() > 0.90) {
           const glitchY = Math.random() * h;
           const glitchH = Math.random() * 10 + 2;
-          ctx.drawImage(canvas, 0, glitchY, w, glitchH, (Math.random() - 0.5) * 12, glitchY, w, glitchH);
+          ctx.drawImage(canvas, 0, glitchY, w, glitchH, (Math.random() - 0.5) * 10, glitchY, w, glitchH);
         }
         ctx.restore();
 
@@ -910,10 +907,10 @@
       const hud = document.getElementById('loader-hud');
 
       const steps = [
-        { pct: '25%', text: 'INITIALIZING HYPERSPACE TUNNEL...' },
-        { pct: '55%', text: 'ESTABLISHING NEURAL FEED...' },
-        { pct: '85%', text: 'SYNCHRONIZING VOXEL MATRIX...' },
-        { pct: '100%', text: 'WARP READY // ACCESSING PORTFOLIO' }
+        { pct: '25%', text: 'INITIALIZING SYSTEM CORE...' },
+        { pct: '55%', text: 'ESTABLISHING MODULES...' },
+        { pct: '85%', text: 'SYNCHRONIZING INTERFACE...' },
+        { pct: '100%', text: 'SYSTEM READY // ACCESSING PORTFOLIO' }
       ];
 
       let step = 0;
@@ -940,19 +937,19 @@
       }, 400);
     })();
 
-    // CYBERPUNK GLITCH CODE STREAM GENERATOR
+    // MONOCHROME CODE STREAM GENERATOR
     (function initGlitchCodeStream() {
       const streamElem = document.getElementById('terminal-stream');
 
       const codeSnippets = [
         '<span class="cm">// ENGINE_CORE_INIT: C++20 Stream</span>',
         '<span class="kw">#include</span> <span class="str">&lt;ZoroEngine/CyberPhysics.h&gt;</span>',
-        '<span class="kw">void</span> <span class="fn">RenderGlitchMesh</span>(<span class="kw">float</span> dt) {',
-        '  <span class="kw">auto</span> shader = <span class="fn">LoadShader</span>(<span class="str">"GlitchVoxel.hlsl"</span>);',
+        '<span class="kw">void</span> <span class="fn">RenderMesh</span>(<span class="kw">float</span> dt) {',
+        '  <span class="kw">auto</span> shader = <span class="fn">LoadShader</span>(<span class="str">"VoxelRender.hlsl"</span>);',
         '  shader.<span class="fn">SetUniform</span>(<span class="str">"u_Time"</span>, <span class="num">0.042f</span>);',
         '  <span class="cm">// RAM: 0x7F80A2 -&gt; ACTIVE</span>',
         '  <span class="kw">if</span> (<span class="fn">DetectMatrixCorrupt</span>()) {',
-        '    <span class="fn">ApplyGlitchPass</span>(<span class="num">0xFF00AA</span>);',
+        '    <span class="fn">ApplyPass</span>(<span class="num">0xFFFFFF</span>);',
         '  }',
         '}'
       ];
